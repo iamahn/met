@@ -2,7 +2,10 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Fonts에서 Jersey 15 Charted 폰트 불러오기 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15+Charted&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <title>new metronome</title>
     <style>
@@ -16,12 +19,38 @@
     <!-- 중앙에 배치되는 메인 컨테이너 박스 -->
     <div class="app-container">
         
-        <!-- 1. 상단 직사각형 행 -->
-        <div class="top-row">
-            <div class="rect-box small">1</div>
-            <div class="rect-box medium">4/4</div>
-            <div class="rect-box large">060</div>
+
+
+<!-- 1. 상단 직사각형 행 -->
+<div class="top-row">
+    <div class="rect-box small">1</div>
+    <div class="rect-box medium">4/4</div>
+    <div class="rect-box large">060</div>
+</div>
+
+<!-- [수정됨] 제어 버튼 행 -->
+<div class="control-row">
+    
+    <!-- 1. 고급 입체 CLEAR 버튼 (하나만 남김) -->
+    <button id="btn-clear" class="clear-btn">
+        <div class="button-outer">
+            <div class="button-inner">
+                <span>CLEAR</span>
+            </div>
         </div>
+    </button>   
+
+    <!-- 2. PLAY 버튼 -->
+    <button id="btn-play" class="control-btn play-btn">PLAY/STOP</button>
+    
+    <!-- 3. 템포 컨트롤러 영역 -->
+    <div class="tempo-controller">
+        <button id="btn-minus" class="arrow-btn minus-btn"></button>
+        <button id="btn-tap" class="control-btn tap-btn">TAP</button>
+        <button id="btn-plus" class="arrow-btn plus-btn"></button>
+    </div>
+</div>
+
 
 <!-- 중간 원형 행 전체를 이 구조로 변경해 주세요 -->
 <div class="middle-row">
@@ -31,12 +60,12 @@
         <select class="dropdown-menu">
             <option value="clap">clap</option>
             <option value="crash">crash</option>
-            <option value="hat_close">hat-closed</option>
+            <option value="hat_close">hat-close</option>
             <option value="hat_open">hat-open</option>
             <option value="kick">kick</option>
                  <option value="ride">ride</option>
                       <option value="shake">shake</option>
-                           <option value="snare">snare</option>
+                           <option value="snarer">snarer</option>
                                 <option value="stick">stick</option>
                                      <option value="tamborine">tamborine</option>
                                           <option value="tom1">tom1</option>
@@ -58,11 +87,11 @@
         <select class="dropdown-menu">
             <option value="clap">clap</option>
             <option value="crash">crash</option>
-            <option value="hat_close">hat-closed</option>
+            <option value="hat_close">hat-close</option>
             <option value="hat_open">hat-open</option>
             <option value="kick">kick</option>
                  <option value="ride">ride</option>
-                      <option value="shake">shake</option>
+                      <option value="shaker">shaker</option>
                            <option value="snare">snare</option>
                                 <option value="stick">stick</option>
                                      <option value="tamborine">tamborine</option>
@@ -84,11 +113,11 @@
         <select class="dropdown-menu">
             <option value="clap">clap</option>
             <option value="crash">crash</option>
-            <option value="hat_close">hat-closed</option>
+            <option value="hat_close">hat-close</option>
             <option value="hat_open">hat-open</option>
             <option value="kick">kick</option>
                  <option value="ride">ride</option>
-                      <option value="shake">shake</option>
+                      <option value="shaker">shaker</option>
                            <option value="snare">snare</option>
                                 <option value="stick">stick</option>
                                      <option value="tamborine">tamborine</option>
@@ -109,11 +138,11 @@
         <select class="dropdown-menu">
             <option value="clap">clap</option>
             <option value="crash">crash</option>
-            <option value="hat_close">hat-closed</option>
+            <option value="hat_close">hat-close</option>
             <option value="hat_open">hat-open</option>
             <option value="kick">kick</option>
                  <option value="ride">ride</option>
-                      <option value="shake">shake</option>
+                      <option value="shaker">shaker</option>
                            <option value="snare">snare</option>
                                 <option value="stick">stick</option>
                                      <option value="tamborine">tamborine</option>
@@ -132,11 +161,11 @@
         <select class="dropdown-menu">
             <option value="clap">clap</option>
             <option value="crash">crash</option>
-            <option value="hat_close">hat-closed</option>
+            <option value="hat_close">hat-close</option>
             <option value="hat_open">hat-open</option>
             <option value="kick">kick</option>
                  <option value="ride">ride</option>
-                      <option value="shake">shake</option>
+                      <option value="shaker">shaker</option>
                            <option value="snare">snare</option>
                                 <option value="stick">stick</option>
                                      <option value="tamborine">tamborine</option>
@@ -155,11 +184,11 @@
         <select class="dropdown-menu">
             <option value="clap">clap</option>
             <option value="crash">crash</option>
-            <option value="hat_close">hat-closed</option>
+            <option value="hat_close">hat-close</option>
             <option value="hat_open">hat-open</option>
             <option value="kick">kick</option>
                  <option value="ride">ride</option>
-                      <option value="shake">shake</option>
+                      <option value="shaker">shaker</option>
                            <option value="snare">snare</option>
                                 <option value="stick">stick</option>
                                      <option value="tamborine">tamborine</option>
@@ -178,11 +207,11 @@
         <select class="dropdown-menu">
             <option value="clap">clap</option>
             <option value="crash">crash</option>
-            <option value="hat_close">hat-closed</option>
+            <option value="hat_close">hat-close</option>
             <option value="hat_open">hat-open</option>
             <option value="kick">kick</option>
                  <option value="ride">ride</option>
-                      <option value="shake">shake</option>
+                      <option value="shaker">shaker</option>
                            <option value="snare">snare</option>
                                 <option value="stick">stick</option>
                                      <option value="tamborine">tamborine</option>
@@ -200,6 +229,19 @@
 
         <!-- 3. 하단 그리드 컨테이너 -->
         <div class="bottom-container">
+        <!-- ✨ [신규 추가] 박자 흐름 상태 Bar 라인 -->
+    <div class="grid-line progress-line">
+        <div class="grid-label"></div> <!-- 레이블 공백용 (50px 정렬 맞춤) -->
+        <div class="progress-bar-container">
+            <div id="beat-progress-bar"></div>
+        </div>
+    </div>
+        
+        
+        
+        
+        
+        
             
             <!-- [32 라인] 8개씩 4그룹 = 총 32개 상자 -->
             <div class="grid-line">
