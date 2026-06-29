@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>new metronome</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 1. 흰 배경 바탕 및 중앙 정렬 */
+        body {
+            background-color: #ffffff; /* 전체 배경은 흰색 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* 2. body_2.png의 본체 (가운데 정렬되는 회색 판) */
+        .app-container {
+            background-color: #cccccc; /* 이미지의 기본 회색 배경 */
+            width: 100%;
+            max-width: 1000px; /* 고정된 박스 형태로 화면 중앙에 위치 */
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* 입체감을 위한 살짝의 그림자 */
+        }
+
+        /* ----------------------------------
+           ROW 1: 상단 직사각형 박스 3개 
+        ---------------------------------- */
+        .top-row {
+            display: flex;
+            gap: 40px;
+        }
+
+        .rect-box {
+            background-color: #999999;
+            height: 180px;
+        }
+
+        .rect-box.small { flex: 1; }
+        .rect-box.medium { flex: 2.3; }
+        .rect-box.large { flex: 3.2; }
+
+        /* ----------------------------------
+           ROW 2: 중간 원형 요소 5개
+        ---------------------------------- */
+        .middle-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .circle-box {
+            width: 90px;
+            height: 90px;
+            background-color: #999999;
+            border-radius: 50%;
+        }
+
+        /* ----------------------------------
+           ROW 3: 하단 라벨 + 그리드 시스템
+        ---------------------------------- */
+        .bottom-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .grid-line {
+            display: flex;
+            align-items: center;
+        }
+
+        .grid-label {
+            width: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .grid-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 10px; /* 4개 그룹 사이의 간격 */
+        }
+
+        /* 하나의 큰 그룹 패널 */
+        .grid-group {
+            flex: 1;
+            display: flex;
+            gap: 2px; /* 상자들 사이의 얇은 틈새 격자 */
+        }
+
+        /* 개별 회색 격자 상자 */
+        .grid-cell {
+            flex: 1;
+            height: 55px;
+            background-color: #b3b3b3;
+            border: 1px solid #bcbcbc; /* 미세한 테두리 표현 */
+        }
+        
+        
+    .rect-box.small {
+    flex: 3.2;
+    
+    /* 텍스트를 상자의 정중앙으로 배치하기 위한 속성 */
+    display: flex;
+    align-items: center;      /* 세로 중앙 정렬 */
+    justify-content: center;   /* 가로 중앙 정렬 */
+    
+    /* 글자 스타일 (원하는 대로 조절 가능) */
+    font-size: 120px;           /* 글자 크기 */
+    font-weight: bold;         /* 글자 두껍게 */
+    color: #ffffff;            /* 글자 색상 (흰색) */
+}    
+        
+
+
+        
+    .rect-box.medium {
+    flex: 3.2;
+    
+    /* 텍스트를 상자의 정중앙으로 배치하기 위한 속성 */
+    display: flex;
+    align-items: center;      /* 세로 중앙 정렬 */
+    justify-content: center;   /* 가로 중앙 정렬 */
+    
+    /* 글자 스타일 (원하는 대로 조절 가능) */
+    font-size: 120px;           /* 글자 크기 */
+    font-weight: bold;         /* 글자 두껍게 */
+    color: #ffffff;            /* 글자 색상 (흰색) */
+} 
+
+
+
+        
+    .rect-box.large {
+    flex: 3.2;
+    
+    /* 텍스트를 상자의 정중앙으로 배치하기 위한 속성 */
+    display: flex;
+    align-items: center;      /* 세로 중앙 정렬 */
+    justify-content: center;   /* 가로 중앙 정렬 */
+    
+    /* 글자 스타일 (원하는 대로 조절 가능) */
+    font-size: 120px;           /* 글자 크기 */
+    font-weight: bold;         /* 글자 두껍게 */
+    color: #ffffff;            /* 글자 색상 (흰색) */
+} 
+
+/* 기존 circle-container의 gap(간격)을 조금 줄여 뭉쳐 보이게 조절합니다 */
+.circle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 8px;           /* 요소들 사이의 세로 간격 */
+}
+
+/* 볼륨 슬라이더 스타일 */
+.volume-slider {
+    width: 80px;         /* 드롭다운(90px)보다 살짝 작게 조절하여 균형을 맞춤 */
+    cursor: pointer;
+    height: 4px;         /* 슬라이더 트랙 두께 */
+    accent-color: #666666; /* 슬라이더 조절 버튼(Thumb) 색상 변경 (최신 브라우저 지원) */
+}        
+        
+    </style>
+</head>
+<body>
+
+    <!-- 중앙에 배치되는 메인 컨테이너 박스 -->
+    <div class="app-container">
+        
+        <!-- 1. 상단 직사각형 행 -->
+        <div class="top-row">
+            <div class="rect-box small">1</div>
+            <div class="rect-box medium">4/4</div>
+            <div class="rect-box large">060</div>
+        </div>
+
+<!-- 중간 원형 행 전체를 이 구조로 변경해 주세요 -->
+<div class="middle-row">
+    <!-- 1번째 원형 + 드롭다운 -->
+    <div class="circle-container">
+        <div class="circle-box"></div>
+        <select class="dropdown-menu">
+            <option value="clap">clap</option>
+            <option value="crash">crash</option>
+            <option value="hat_close">hat-closed</option>
+            <option value="hat_open">hat-open</option>
+            <option value="kick">kick</option>
+                 <option value="ride">ride</option>
+                      <option value="shake">shake</option>
+                           <option value="snare">snare</option>
+                                <option value="stick">stick</option>
+                                     <option value="tamborine">tamborine</option>
+                                          <option value="tom1">tom1</option>
+                                          <option value="tom2">tom2</option>
+                                          <option value="tom3">tom3</option>
+                                          <option value="tom4">tom4</option>
+                                          <option value="tom5">tom5</option>
+                                          <option value="tom6">tom6</option>
+        </select>
+        <input type="range" class="volume-slider" min="0" max="100" value="80">
+    </div>
+
+    <!-- 2번째 원형 + 드롭다운 -->
+    <div class="circle-container">
+        <div class="circle-box"></div>
+        <select class="dropdown-menu">
+            <option value="clap">clap</option>
+            <option value="crash">crash</option>
+            <option value="hat_close">hat-closed</option>
+            <option value="hat_open">hat-open</option>
+            <option value="kick">kick</option>
+                 <option value="ride">ride</option>
+                      <option value="shake">shake</option>
+                           <option value="snare">snare</option>
+                                <option value="stick">stick</option>
+                                     <option value="tamborine">tamborine</option>
+                                          <option value="tom1">tom1</option>
+                                          <option value="tom2">tom2</option>
+                                          <option value="tom3">tom3</option>
+                                          <option value="tom4">tom4</option>
+                                          <option value="tom5">tom5</option>
+                                          <option value="tom6">tom6</option>
+        </select>
+                <input type="range" class="volume-slider" min="0" max="100" value="80">
+        
+    </div>
+
+    <!-- 3번째, 4번째, 5번째도 동일한 방식으로 구성 가능합니다 -->
+    <div class="circle-container">
+        <div class="circle-box"></div>
+        <select class="dropdown-menu">
+            <option value="clap">clap</option>
+            <option value="crash">crash</option>
+            <option value="hat_close">hat-closed</option>
+            <option value="hat_open">hat-open</option>
+            <option value="kick">kick</option>
+                 <option value="ride">ride</option>
+                      <option value="shake">shake</option>
+                           <option value="snare">snare</option>
+                                <option value="stick">stick</option>
+                                     <option value="tamborine">tamborine</option>
+                                          <option value="tom1">tom1</option>
+                                          <option value="tom2">tom2</option>
+                                          <option value="tom3">tom3</option>
+                                          <option value="tom4">tom4</option>
+                                          <option value="tom5">tom5</option>
+                                          <option value="tom6">tom6</option>
+                                          
+            
+        </select>
+        <input type="range" class="volume-slider" min="0" max="100" value="80">
+    </div>
+    <div class="circle-container">
+        <div class="circle-box"></div>
+        <select class="dropdown-menu">
+            <option value="clap">clap</option>
+            <option value="crash">crash</option>
+            <option value="hat_close">hat-closed</option>
+            <option value="hat_open">hat-open</option>
+            <option value="kick">kick</option>
+                 <option value="ride">ride</option>
+                      <option value="shake">shake</option>
+                           <option value="snare">snare</option>
+                                <option value="stick">stick</option>
+                                     <option value="tamborine">tamborine</option>
+                                          <option value="tom1">tom1</option>
+                                          <option value="tom2">tom2</option>
+                                          <option value="tom3">tom3</option>
+                                          <option value="tom4">tom4</option>
+                                          <option value="tom5">tom5</option>
+                                          <option value="tom6">tom6</option>
+        </select>
+        <input type="range" class="volume-slider" min="0" max="100" value="80">
+    </div>
+    <div class="circle-container">
+        <div class="circle-box"></div>
+        <select class="dropdown-menu">
+            <option value="clap">clap</option>
+            <option value="crash">crash</option>
+            <option value="hat_close">hat-closed</option>
+            <option value="hat_open">hat-open</option>
+            <option value="kick">kick</option>
+                 <option value="ride">ride</option>
+                      <option value="shake">shake</option>
+                           <option value="snare">snare</option>
+                                <option value="stick">stick</option>
+                                     <option value="tamborine">tamborine</option>
+                                          <option value="tom1">tom1</option>
+                                          <option value="tom2">tom2</option>
+                                          <option value="tom3">tom3</option>
+                                          <option value="tom4">tom4</option>
+                                          <option value="tom5">tom5</option>
+                                          <option value="tom6">tom6</option>
+        </select>
+        <input type="range" class="volume-slider" min="0" max="100" value="80">
+    </div>
+        <div class="circle-container">
+        <div class="circle-box"></div>
+        <select class="dropdown-menu">
+            <option value="clap">clap</option>
+            <option value="crash">crash</option>
+            <option value="hat_close">hat-closed</option>
+            <option value="hat_open">hat-open</option>
+            <option value="kick">kick</option>
+                 <option value="ride">ride</option>
+                      <option value="shake">shake</option>
+                           <option value="snare">snare</option>
+                                <option value="stick">stick</option>
+                                     <option value="tamborine">tamborine</option>
+                                          <option value="tom1">tom1</option>
+                                          <option value="tom2">tom2</option>
+                                          <option value="tom3">tom3</option>
+                                          <option value="tom4">tom4</option>
+                                          <option value="tom5">tom5</option>
+                                          <option value="tom6">tom6</option>
+        </select>
+        <input type="range" class="volume-slider" min="0" max="100" value="80">
+    </div>
+        <div class="circle-container">
+        <div class="circle-box"></div>
+        <select class="dropdown-menu">
+            <option value="clap">clap</option>
+            <option value="crash">crash</option>
+            <option value="hat_close">hat-closed</option>
+            <option value="hat_open">hat-open</option>
+            <option value="kick">kick</option>
+                 <option value="ride">ride</option>
+                      <option value="shake">shake</option>
+                           <option value="snare">snare</option>
+                                <option value="stick">stick</option>
+                                     <option value="tamborine">tamborine</option>
+                                          <option value="tom1">tom1</option>
+                                          <option value="tom2">tom2</option>
+                                          <option value="tom3">tom3</option>
+                                          <option value="tom4">tom4</option>
+                                          <option value="tom5">tom5</option>
+                                          <option value="tom6">tom6</option>
+        </select>
+        <input type="range" class="volume-slider" min="0" max="100" value="80">
+    </div>
+</div>
+
+        <!-- 3. 하단 그리드 컨테이너 -->
+        <div class="bottom-container">
+            
+            <!-- [32 라인] 8개씩 4그룹 = 총 32개 상자 -->
+            <div class="grid-line">
+                <div class="grid-label">𝅘𝅥𝅰(8)</div>
+                <div class="grid-wrapper">
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- [6 라인] 6개씩 4그룹 = 총 24개 상자 -->
+            <div class="grid-line">
+                <div class="grid-label">𝅘𝅥𝅯(6)</div>
+                <div class="grid-wrapper">
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- [16 라인] 4개씩 4그룹 = 총 16개 상자 -->
+            <div class="grid-line">
+                <div class="grid-label"> 𝅘𝅥𝅯(4)</div>
+                <div class="grid-wrapper">
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-group">
+                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript" src="app.js"></script> 
+
+</body>
+</html>
