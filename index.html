@@ -1,19 +1,32 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
+    <!-- 언어 및 메타 설정 (영어로 변경 포함) -->
     <meta charset="UTF-8">
-<!-- Google Fonts에서 Jersey 15 Charted 폰트 불러오기 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15+Charted&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>new metronome</title>
-    <style>
-       
-        
-    </style>
+
+    <!-- 기존 구글 폰트 (Jersey) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15+Charted&display=swap" rel="stylesheet">
     
-</head>
+    <!-- 🛠️ DSEG7 폰트 라이브러리 추가 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dseg@2.1.0/css/dseg.min.css">
+
+    <!-- 기존 외부 스타일시트 -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- 내부 스타일 선언 구역 (필요시 사용) -->
+    <style>
+        /* 혹시나 styles.css가 아니라 여기에 적으실 거라면 아래처럼 테스트해 보세요 */
+        /*
+        .rect-box.large {
+            font-family: 'DSEG7 Classic', sans-serif !important;
+        }
+        */
+    </style>
+</head> <!-- 👈 닫는 태그가 반드시 모든 설정의 최하단에 와야 합니다! -->
 <body>
 
     <!-- 중앙에 배치되는 메인 컨테이너 박스 -->

@@ -48,7 +48,7 @@ body {
     display: flex;
     align-items: center;      
     justify-content: center;   
-    font-family: 'Jersey 10', sans-serif;
+    font-family: 'DSEG7 Classic', sans-serif !important;
     font-size: 140px;
     color: #33ff33;            
     letter-spacing: 15px;
