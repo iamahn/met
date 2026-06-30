@@ -16,7 +16,7 @@ body {
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
-    font-family: 'Arial', sans-s erif;
+    font-family: 'Jersey 10', sans-s erif;
 }
 
 /* 2. 본체 메인 컨테이너 */
@@ -48,7 +48,7 @@ body {
     display: flex;
     align-items: center;      
     justify-content: center;   
-    font-family: 'DSEG7 Classic', sans-serif !important;
+    font-family: 'Jersey 10', sans-serif;
     font-size: 140px;
     color: #33ff33;            
     letter-spacing: 15px;
@@ -122,8 +122,8 @@ body {
 }
 
 .clear-btn .button-inner span {
-    font-family: 'DSEG7 Classic', sans-serif;
-    font-size: 30px;
+    font-family: 'Jersey 10', sans-serif;
+    font-size: 40px;
     font-weight: bold;
     letter-spacing: 5px;
     color: white;
@@ -136,8 +136,8 @@ body {
     height: 65px;
     cursor: pointer;
     border-radius: 15px;
-    font-family: 'DSEG7 Classic', sans-serif;
-    font-size: 30px;
+    font-family: 'Jersey 10', sans-serif;
+    font-size: 40px;
     font-weight: bold;
     letter-spacing: 5px;
     color: white;
@@ -180,7 +180,7 @@ body {
     cursor: pointer;
     border-radius: 15px;
     font-family: 'Jersey 10', sans-serif;
-    font-size: 30px;
+    font-size: 40px;
     font-weight: bold;
     letter-spacing: 5px;
     color: white;
@@ -389,7 +389,7 @@ body {
 .progress-bar-container {
     flex: 1; /* grid-wrapper와 정확히 동일한 가로 크기를 가집니다 */
     height: 35px;
-    background-color: #ffffff; /* 비어있는 상태의 짙은 회색 트랙 */
+    background-color: darkkhaki; /* 비어있는 상태의 짙은 회색 트랙 */
     border-radius: 4px;
     overflow: hidden;
     position: relative;

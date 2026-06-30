@@ -206,7 +206,7 @@ function renderLineUI(domCells, dataArray) {
     domCells.forEach((cell, idx) => {
         const state = dataArray[idx];
         if (state === 0) {
-            cell.style.backgroundColor = 'white'; // 기본 회색
+            cell.style.backgroundColor = 'darkkhaki'; // 기본 회색
         } else if (state === 1) {
             cell.style.backgroundColor = '#ffa500'; // 오렌지색
         } else if (state === 2) {

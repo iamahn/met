@@ -1,32 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <!-- 언어 및 메타 설정 (영어로 변경 포함) -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>new metronome</title>
-
-    <!-- 기존 구글 폰트 (Jersey) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15+Charted&display=swap" rel="stylesheet">
-    
-    <!-- 🛠️ DSEG7 폰트 라이브러리 추가 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dseg@0.46.0/css/dseg.min.css">
-
-    <!-- 기존 외부 스타일시트 -->
+<!-- Google Fonts에서 Jersey 15 Charted 폰트 불러오기 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15+Charted&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-
-    <!-- 내부 스타일 선언 구역 (필요시 사용) -->
+    <title>new metronome</title>
     <style>
-        /* 혹시나 styles.css가 아니라 여기에 적으실 거라면 아래처럼 테스트해 보세요 */
-        /*
-        .rect-box.large {
-            font-family: 'DSEG7 Classic', sans-serif !important;
-        }
-        */
+       
+        
     </style>
-</head> <!-- 👈 닫는 태그가 반드시 모든 설정의 최하단에 와야 합니다! -->
+    
+</head>
 <body>
 
     <!-- 중앙에 배치되는 메인 컨테이너 박스 -->
@@ -71,25 +58,31 @@
     <div class="circle-container">
         <div class="circle-box"></div>
         <select class="dropdown-menu">
-            <option value="clap">clap</option>
-            <option value="crash">crash</option>
+            <option value="empty">empty</option>
+            <option value="click01">click01</option>
+            <option value="click02">click02</option>
+            <option value="click03">click03</option>
+            <option value="click04">click04</option>
+            <option value="click05">click05</option>
+            <option value="click06">click06</option>
+            <option value="click07">click07</option>
+            <option value="click08">click08</option>
+            <option value="click09">click09</option>
+            <option value="click10">click10</option>
             <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>
+            <option value="hat_open">hat-open</option>            
+            <option value="crash">crash</option>   
+            <option value="ride">ride</option>            
             <option value="kick">kick</option>
-                 <option value="ride">ride</option>
-                      <option value="shaker">shaker</option>
-                           <option value="snarer">snarer</option>
-                                <option value="stick">stick</option>
-                                     <option value="tamborine">tamborine</option>
-                                          <option value="tom1">tom1</option>
-                                          <option value="tom2">tom2</option>
-                                          <option value="tom3">tom3</option>
-                                          <option value="tom4">tom4</option>
-                                          <option value="tom5">tom5</option>
-                                          <option value="tom6">tom6</option>
-                                          <option value="(m)click">(m)click</option>
-                                      
-                                          
+            <option value="snare">snare</option>
+            <option value="tom1">tom1</option>
+            <option value="tom2">tom2</option>
+            <option value="tom3">tom3</option>
+            <option value="tom4">tom4</option>
+            <option value="tom5">tom5</option>
+            <option value="tom6">tom6</option>                     
+            <option value="clap">clap</option>
+            <option value="shaker">shaker</option>
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
@@ -98,23 +91,31 @@
     <div class="circle-container">
         <div class="circle-box"></div>
         <select class="dropdown-menu">
-            <option value="clap">clap</option>
-            <option value="crash">crash</option>
+            <option value="empty">empty</option>
+            <option value="click01">click01</option>
+            <option value="click02">click02</option>
+            <option value="click03">click03</option>
+            <option value="click04">click04</option>
+            <option value="click05">click05</option>
+            <option value="click06">click06</option>
+            <option value="click07">click07</option>
+            <option value="click08">click08</option>
+            <option value="click09">click09</option>
+            <option value="click10">click10</option>
             <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>
+            <option value="hat_open">hat-open</option>            
+            <option value="crash">crash</option>   
+            <option value="ride">ride</option>            
             <option value="kick">kick</option>
-                 <option value="ride">ride</option>
-                      <option value="shaker">shaker</option>
-                           <option value="snare">snare</option>
-                                <option value="stick">stick</option>
-                                     <option value="tamborine">tamborine</option>
-                                          <option value="tom1">tom1</option>
-                                          <option value="tom2">tom2</option>
-                                          <option value="tom3">tom3</option>
-                                          <option value="tom4">tom4</option>
-                                          <option value="tom5">tom5</option>
-                                          <option value="tom6">tom6</option>
-                                          <option value="(m)click">(m)click</option>   
+            <option value="snare">snare</option>
+            <option value="tom1">tom1</option>
+            <option value="tom2">tom2</option>
+            <option value="tom3">tom3</option>
+            <option value="tom4">tom4</option>
+            <option value="tom5">tom5</option>
+            <option value="tom6">tom6</option>                     
+            <option value="clap">clap</option>
+            <option value="shaker">shaker</option>  
         </select>
                 <input type="range" class="volume-slider" min="0" max="100" value="80">
         
@@ -124,117 +125,155 @@
     <div class="circle-container">
         <div class="circle-box"></div>
         <select class="dropdown-menu">
-            <option value="clap">clap</option>
-            <option value="crash">crash</option>
+            <option value="empty">empty</option>
+            <option value="click01">click01</option>
+            <option value="click02">click02</option>
+            <option value="click03">click03</option>
+            <option value="click04">click04</option>
+            <option value="click05">click05</option>
+            <option value="click06">click06</option>
+            <option value="click07">click07</option>
+            <option value="click08">click08</option>
+            <option value="click09">click09</option>
+            <option value="click10">click10</option>
             <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>
+            <option value="hat_open">hat-open</option>            
+            <option value="crash">crash</option>   
+            <option value="ride">ride</option>            
             <option value="kick">kick</option>
-                 <option value="ride">ride</option>
-                      <option value="shaker">shaker</option>
-                           <option value="snare">snare</option>
-                                <option value="stick">stick</option>
-                                     <option value="tamborine">tamborine</option>
-                                          <option value="tom1">tom1</option>
-                                          <option value="tom2">tom2</option>
-                                          <option value="tom3">tom3</option>
-                                          <option value="tom4">tom4</option>
-                                          <option value="tom5">tom5</option>
-                                          <option value="tom6">tom6</option>
-                                          <option value="(m)click">(m)click</option>   
-                                          
-            
+            <option value="snare">snare</option>
+            <option value="tom1">tom1</option>
+            <option value="tom2">tom2</option>
+            <option value="tom3">tom3</option>
+            <option value="tom4">tom4</option>
+            <option value="tom5">tom5</option>
+            <option value="tom6">tom6</option>                     
+            <option value="clap">clap</option>
+            <option value="shaker">shaker</option>    
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
     <div class="circle-container">
         <div class="circle-box"></div>
         <select class="dropdown-menu">
-            <option value="clap">clap</option>
-            <option value="crash">crash</option>
+            <option value="empty">empty</option>
+            <option value="click01">click01</option>
+            <option value="click02">click02</option>
+            <option value="click03">click03</option>
+            <option value="click04">click04</option>
+            <option value="click05">click05</option>
+            <option value="click06">click06</option>
+            <option value="click07">click07</option>
+            <option value="click08">click08</option>
+            <option value="click09">click09</option>
+            <option value="click10">click10</option>
             <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>
+            <option value="hat_open">hat-open</option>            
+            <option value="crash">crash</option>   
+            <option value="ride">ride</option>            
             <option value="kick">kick</option>
-                 <option value="ride">ride</option>
-                      <option value="shaker">shaker</option>
-                           <option value="snare">snare</option>
-                                <option value="stick">stick</option>
-                                     <option value="tamborine">tamborine</option>
-                                          <option value="tom1">tom1</option>
-                                          <option value="tom2">tom2</option>
-                                          <option value="tom3">tom3</option>
-                                          <option value="tom4">tom4</option>
-                                          <option value="tom5">tom5</option>
-                                          <option value="tom6">tom6</option>
-                                          <option value="(m)click">(m)click</option>    
+            <option value="snare">snare</option>
+            <option value="tom1">tom1</option>
+            <option value="tom2">tom2</option>
+            <option value="tom3">tom3</option>
+            <option value="tom4">tom4</option>
+            <option value="tom5">tom5</option>
+            <option value="tom6">tom6</option>                     
+            <option value="clap">clap</option>
+            <option value="shaker">shaker</option>      
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
     <div class="circle-container">
         <div class="circle-box"></div>
         <select class="dropdown-menu">
-            <option value="clap">clap</option>
-            <option value="crash">crash</option>
+            <option value="empty">empty</option>
+            <option value="click01">click01</option>
+            <option value="click02">click02</option>
+            <option value="click03">click03</option>
+            <option value="click04">click04</option>
+            <option value="click05">click05</option>
+            <option value="click06">click06</option>
+            <option value="click07">click07</option>
+            <option value="click08">click08</option>
+            <option value="click09">click09</option>
+            <option value="click10">click10</option>
             <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>
+            <option value="hat_open">hat-open</option>            
+            <option value="crash">crash</option>   
+            <option value="ride">ride</option>            
             <option value="kick">kick</option>
-                 <option value="ride">ride</option>
-                      <option value="shaker">shaker</option>
-                           <option value="snare">snare</option>
-                                <option value="stick">stick</option>
-                                     <option value="tamborine">tamborine</option>
-                                          <option value="tom1">tom1</option>
-                                          <option value="tom2">tom2</option>
-                                          <option value="tom3">tom3</option>
-                                          <option value="tom4">tom4</option>
-                                          <option value="tom5">tom5</option>
-                                          <option value="tom6">tom6</option>
-                                          <option value="(m)click">(m)click</option>    
+            <option value="snare">snare</option>
+            <option value="tom1">tom1</option>
+            <option value="tom2">tom2</option>
+            <option value="tom3">tom3</option>
+            <option value="tom4">tom4</option>
+            <option value="tom5">tom5</option>
+            <option value="tom6">tom6</option>                     
+            <option value="clap">clap</option>
+            <option value="shaker">shaker</option>     
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
         <div class="circle-container">
         <div class="circle-box"></div>
         <select class="dropdown-menu">
-            <option value="clap">clap</option>
-            <option value="crash">crash</option>
+            <option value="empty">empty</option>
+            <option value="click01">click01</option>
+            <option value="click02">click02</option>
+            <option value="click03">click03</option>
+            <option value="click04">click04</option>
+            <option value="click05">click05</option>
+            <option value="click06">click06</option>
+            <option value="click07">click07</option>
+            <option value="click08">click08</option>
+            <option value="click09">click09</option>
+            <option value="click10">click10</option>
             <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>
+            <option value="hat_open">hat-open</option>            
+            <option value="crash">crash</option>   
+            <option value="ride">ride</option>            
             <option value="kick">kick</option>
-                 <option value="ride">ride</option>
-                      <option value="shaker">shaker</option>
-                           <option value="snare">snare</option>
-                                <option value="stick">stick</option>
-                                     <option value="tamborine">tamborine</option>
-                                          <option value="tom1">tom1</option>
-                                          <option value="tom2">tom2</option>
-                                          <option value="tom3">tom3</option>
-                                          <option value="tom4">tom4</option>
-                                          <option value="tom5">tom5</option>
-                                          <option value="tom6">tom6</option>
-                                          <option value="(m)click">(m)click</option>     
+            <option value="snare">snare</option>
+            <option value="tom1">tom1</option>
+            <option value="tom2">tom2</option>
+            <option value="tom3">tom3</option>
+            <option value="tom4">tom4</option>
+            <option value="tom5">tom5</option>
+            <option value="tom6">tom6</option>                     
+            <option value="clap">clap</option>
+            <option value="shaker">shaker</option>      
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
         <div class="circle-container">
         <div class="circle-box"></div>
         <select class="dropdown-menu">
-            <option value="clap">clap</option>
-            <option value="crash">crash</option>
+            <option value="empty">empty</option>
+            <option value="click01">click01</option>
+            <option value="click02">click02</option>
+            <option value="click03">click03</option>
+            <option value="click04">click04</option>
+            <option value="click05">click05</option>
+            <option value="click06">click06</option>
+            <option value="click07">click07</option>
+            <option value="click08">click08</option>
+            <option value="click09">click09</option>
+            <option value="click10">click10</option>
             <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>
+            <option value="hat_open">hat-open</option>            
+            <option value="crash">crash</option>   
+            <option value="ride">ride</option>            
             <option value="kick">kick</option>
-                 <option value="ride">ride</option>
-                      <option value="shaker">shaker</option>
-                           <option value="snare">snare</option>
-                                <option value="stick">stick</option>
-                                     <option value="tamborine">tamborine</option>
-                                          <option value="tom1">tom1</option>
-                                          <option value="tom2">tom2</option>
-                                          <option value="tom3">tom3</option>
-                                          <option value="tom4">tom4</option>
-                                          <option value="tom5">tom5</option>
-                                          <option value="tom6">tom6</option>
-                                          <option value="(m)click">(m)click</option> 
+            <option value="snare">snare</option>
+            <option value="tom1">tom1</option>
+            <option value="tom2">tom2</option>
+            <option value="tom3">tom3</option>
+            <option value="tom4">tom4</option>
+            <option value="tom5">tom5</option>
+            <option value="tom6">tom6</option>                     
+            <option value="clap">clap</option>
+            <option value="shaker">shaker</option>   
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
