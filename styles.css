@@ -1,0 +1,423 @@
+/* =========================================================================
+   [전체 통합본] 레이아웃 완벽 복구 & 초고화질 아날로그 3D 입체 시스템
+   ========================================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 1. 흰 배경 바탕 및 중앙 정렬 */
+body {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: 'Jersey 10', sans-s erif;
+}
+
+/* 2. 본체 메인 컨테이너 */
+.app-container {
+    background-color: gold;
+    width: 100%;
+    max-width: 1000px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 4%;
+}
+
+/* ----------------------------------
+   ROW 1: 상단 LED 전광판 (황금 비율 원상 복구)
+---------------------------------- */
+.top-row {
+    display: flex;
+    gap: 40px;
+}
+
+.rect-box {
+    background-color: #373737; 
+    height: 180px;
+    border: 4px solid #333333; 
+    border-radius: 10px;
+    display: flex;
+    align-items: center;      
+    justify-content: center;   
+    font-family: 'Jersey 10', sans-serif;
+    font-size: 140px;
+    color: #33ff33;            
+    letter-spacing: 15px;
+    text-shadow: 
+        0 0 8px rgba(51, 255, 51, 0.5), 
+        0 0 15px rgba(51, 255, 51, 0.3);
+}
+
+/* 비율이 겹쳐서 깨지던 중복 코드를 제거하고 정확하게 다시 선언합니다 */
+.rect-box.small  { flex: 1; }
+.rect-box.medium { flex: 2.3; }
+.rect-box.large  { flex: 3.2; }
+
+
+/* ----------------------------------
+   ROW 2: 제어 버튼 행 (CONTROL ROW) - 상단 전광판과 수직 정렬 일치
+---------------------------------- */
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* 상단 전광판 gap과 일치 */
+}
+
+/* [CLEAR 버튼] 상단 small(flex: 1)과 완벽 정렬 */
+.clear-btn {
+    all: unset; 
+    flex: 1;
+    height: 65px;
+    cursor: pointer;
+    position: relative;
+    border-radius: 25px;
+
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 
+        -0.05em -0.05em 0.1em -0.05em rgba(5, 5, 5, 0.25),
+        0.03em 0.03em 0.05em 0 rgba(5, 5, 5, 0.1);
+}
+
+.clear-btn .button-outer {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 0.04em 0.04em -0.01em rgba(5, 5, 5, 0.8),
+        0 0.01em 0.01em -0.01em rgba(5, 5, 5, 0.4),
+        0.1em 0.2em 0.08em -0.01em rgba(0, 0, 0, 0.2);
+}
+
+.clear-btn .button-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(180deg, #e9e9e9, #9d9898);
+    overflow: clip;
+    clip-path: inset(0 0 0 0 round 25px);
+    box-shadow:
+        -0.05em -0.05em 0.05em 0 inset rgba(5, 5, 5, 0.25),
+        0 0 0.05em 0.15em inset rgba(255, 255, 255, 0.2),
+        0.025em 0.05em 0.1em 0 inset rgba(255, 255, 255, 0.6),
+        0.1em 0.1em 0.1em inset rgba(255, 255, 255, 0.25),
+        -0.05em -0.15em 0.15em 0.05em inset rgba(5, 5, 5, 0.2);
+}
+
+.clear-btn .button-inner span {
+    font-family: 'Jersey 10', sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: white;
+}
+
+/* [PLAY/STOP 버튼] 상단 medium(flex: 2.3)과 완벽 정렬되도록 수정 */
+.play-btn {
+    all: unset;
+    flex: 2.3;
+    height: 65px;
+    cursor: pointer;
+    border-radius: 15px;
+    font-family: 'Jersey 10', sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background-image: linear-gradient(180deg, #9ee5f5, #22859c);
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.5),
+        0 2px 4px -1px rgba(0, 0, 0, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.5),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.4),
+        inset -2px 0 3px rgba(0, 0, 0, 0.2),
+        inset 2px 0 3px rgba(255, 255, 255, 0.2);
+    
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+}
+
+.play-btn:active {
+    transform: scale(0.97);
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.7);
+}
+
+/* [템포 컨트롤러 영역] 상단 large(flex: 3.2)와 완벽 정렬 */
+.tempo-controller {
+    flex: 3.2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+/* [TAP 버튼] */
+.tap-btn {
+    all: unset;
+    flex: 1;
+    height: 65px;
+    cursor: pointer;
+    border-radius: 15px;
+    font-family: 'Jersey 10', sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(180deg, #e9e9e9, #9d9898);
+    box-shadow: 
+        0 4px 5px -1px rgba(0, 0, 0, 0.6),
+        inset 0 2px 3px rgba(255, 255, 255, 0.25),
+        inset 0 -3px 5px rgba(0, 0, 0, 0.6);
+}
+
+/* [화살표 삼각형 버튼 - 입체 효과 복원 완료] */
+.arrow-btn {
+    all: unset;
+    width: 45px;
+    height: 65px;
+    cursor: pointer;
+    position: relative;
+    border-radius: 10px;
+    background-image: linear-gradient(180deg, #e9e9e9, #9d9898);
+    box-shadow: 
+        0 4px 5px -1px rgba(0, 0, 0, 0.5),
+        inset 0 2px 3px rgba(255, 255, 255, 0.3),
+        inset 0 -3px 4px rgba(0, 0, 0, 0.5);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.arrow-btn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 22px;
+    background-color: #ffffff;
+}
+
+.minus-btn::before { clip-path: path('M 18 0 L 18 22 L 0 11 Z'); }
+.plus-btn::before { clip-path: path('M 0 0 L 0 22 L 18 11 Z'); }
+
+.arrow-btn:active {
+    transform: scale(0.95);
+    box-shadow: inset 0 4px 5px rgba(0, 0, 0, 0.7);
+}
+
+
+/* ----------------------------------
+   ROW 3: 중간 원형 패드 패널
+---------------------------------- */
+.middle-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.circle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 8px;
+}
+
+/* ----------------------------------
+   CIRCLE BOX: CLEAR 버튼의 3층 구조 시스템 완벽 이식 (바닥에 착 붙은 메탈릭 스타일)
+---------------------------------- */
+.circle-box {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden; /* 이미지가 원형 밖으로 튀어나가지 않게 처리 */
+    
+    /* 1. CLEAR 버튼과 동일한 고급 메탈릭 실버 그라디언트 주입 */
+    background-image: linear-gradient(180deg, #eaeaea, #9e9999); 
+    
+    /* 2. 바닥에 착 붙어있는 묵직한 물리적 두께감 표현 (7중 다중 레이어 섀도우) */
+    box-shadow: 
+        /* 외곽: 바닥면과 밀착되는 물리적 두께 및 어두운 음영 */
+        0 4px 5px -1px rgba(0, 0, 0, 0.4),
+        0 1px 2px -1px rgba(0, 0, 0, 0.3),
+        0.5px 1px 0px rgba(255, 255, 255, 0.4), /* 외곽 테두리 미세 칼날 하이라이트 */
+        
+        /* 내곽: 안쪽으로 정밀하게 깎여 들어가는 음각 인셋 효과 */
+        inset 0 3px 4px rgba(255, 255, 255, 0.8),  /* 상단 강한 광택 링 */
+        inset 3px 0 3px rgba(255, 255, 255, 0.3),   /* 좌측 반사광 */
+        inset -3px 0 3px rgba(0, 0, 0, 0.15),       /* 우측 음영 */
+        inset 0 -5px 6px rgba(0, 0, 0, 0.35);       /* 하단 굴곡 감쇄림 */
+        
+    /* 자연스러운 애니메이션 텐션 */
+    transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.1), box-shadow 0.1s ease, filter 0.1s ease;
+}
+
+
+.circle-box::after {
+    content: "";
+    position: absolute;
+    top: 15%;  /* 이미지 여백 조절 (중앙에 예쁘게 위치하도록) */
+    left: 15%;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    
+    /* 자바스크립트로부터 전달받을 이미지 변수 호출 */
+    background-image: var(--bg-img, none);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* 이미지가 계기판 안쪽에 각인된 듯한 은은한 투명도와 합성 효과 */
+    opacity: 0.85; 
+    mix-blend-mode: multiply; /* 흰 배경이 있는 아이콘 이미지라면 흰색을 투명하게 날려줌 */
+    
+    transition: transform 0.1s ease;
+}
+
+
+/* 마우스 올렸을 때 질감 대비 상승 */
+.circle-box:hover {
+    filter: brightness(1.03) contrast(1.03);
+}
+
+/* 3. 완전히 클릭했을 때 베이스 판 안으로 푹 눌려 들어가는 쾌감 효과 */
+.circle-box:active {
+    transform: scale(0.96);
+    /* 톤이 다운되며 수축하는 물리적 변화 */
+    background-image: linear-gradient(180deg, #949090, #787474); 
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0),
+        inset 0 5px 10px rgba(0, 0, 0, 0.65),       /* 깊게 파이는 음각 그림자 */
+        inset 0 2px 4px rgba(0, 0, 0, 0.4),
+        inset 0 -1px 3px rgba(255, 255, 255, 0.2);
+}
+
+
+/* 눌렸을 때 알맹이 이미지도 덩달아 살짝 작아지며 리얼함 극대화 */
+.circle-box:active::after {
+    transform: scale(0.92);
+}
+
+.volume-slider {
+    width: 80px;
+    cursor: pointer;
+    height: 4px;
+    accent-color: #666666;
+}        
+
+
+/* ----------------------------------
+   ROW 4: 하단 격자 패턴 체크 박스 (완벽 레이아웃 복원)
+---------------------------------- */
+.bottom-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%; /* 찌그러짐 방지 가로 확보 */
+}
+
+.grid-line {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.grid-label {
+    width: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.grid-wrapper {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+}
+
+.grid-group {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+}
+
+.grid-cell {
+    flex: 1;
+    height: 55px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+/* =========================================================================
+   ✨ [신규 추가] 박자 흐름 프로그레스 바 스타일
+   ========================================================================= */
+.progress-line {
+    margin-bottom: 5px; /* 하단 그리드와 미세한 간격 배치 */
+}
+
+.progress-bar-container {
+    flex: 1; /* grid-wrapper와 정확히 동일한 가로 크기를 가집니다 */
+    height: 35px;
+    background-color: darkkhaki; /* 비어있는 상태의 짙은 회색 트랙 */
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+#beat-progress-bar {
+    width: 0%; /* 기본값 0%에서 시작해서 JS로 제어 */
+    height: 100%;
+    background-color: #33ff33; /* 형광 그린 채워지는 색상 (LED 전광판 색상과 매칭) */
+    box-shadow: 0 0 8px rgba(51, 255, 51, 0.8);
+    transition: width 0.03s linear; /* 미세 tick 간 이동을 부드럽게 연결 */
+}
+
+
+
+/* =========================================================================
+   ✨ [신규 추가] TAP 버튼 박자 반짝임(Glow) 스타일
+   ========================================================================= */
+/* 박자 타이밍에 맞춰 이 클래스가 주입되면 그림자가 화사하게 퍼집니다 */
+.tap-blink {
+    box-shadow: 0 0 20px rgba(51, 255, 51, 0.8), 
+                inset 0 0 10px rgba(51, 255, 51, 0.4) !important;
+    border-color: red !important;
+    transition: all 0.05s ease-out; /* 확 켜질 때는 빠르게 */
+}
+
+/* 꺼질 때는 여운을 남기며 부드럽게 사라지도록 기본 버튼에 transition 추가 */
+#btn-tap {
+    transition: all 0.25s ease-in-out;
+}
