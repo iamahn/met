@@ -135,6 +135,7 @@ function initAudio() {
 }
 
 async function loadSound(soundName) {
+	if (soundName === 'empty') return;
     if (audioBuffers[soundName]) return; // 이미 불러온 사운드는 패스
     
     const filePath = `./sound/${soundName}.wav`;
@@ -151,6 +152,7 @@ async function loadSound(soundName) {
 
 // 오디오 재생 처리 로직
 function playSample(soundName, time, volume, isAccent) {
+	if (soundName === 'empty') return;
     if (!audioCtx) return;
     
     // 오렌지색 대비 빨간색(Accent)일 때 볼륨 가중치 부여
@@ -187,12 +189,11 @@ function selectChannel(index) {
     circleContainers.forEach((container, idx) => {
         const circle = container.querySelector('.circle-box');
         if (idx === index) {
-            circle.style.backgroundColor = '#4a90e2'; 
-            circle.style.boxShadow = 'inset 2px 2px 5px rgba(0,0,0,0.4), 2px 2px 5px rgba(0,0,0,0.1)';
+            // 선택된 박스에 고정 효과(selected) 클래스 추가
+            circle.classList.add('selected');
         } else {
-            circle.style.backgroundColor = '#999999';
-            circle.style.border = 'none';
-            circle.style.boxShadow = '4px 4px 10px rgba(0, 0, 0, 0.3), -4px -4px 10px rgba(255, 255, 255, 0.25)';
+            // 나머지 박스들은 고정 효과 클래스 제거 -> 원래 메탈릭 실버로 복귀
+            circle.classList.remove('selected');
         }
     });
 
@@ -360,7 +361,7 @@ function setupEventListeners() {
                 
                 // ✨ 따옴표 오타 수정 완료된 구간 ('white')
                 if (nextState === 0) {
-                    cell.style.backgroundColor = 'white'; 
+                    cell.style.backgroundColor = 'darkkhaki'; 
                 } else if (nextState === 1) {
                     cell.style.backgroundColor = '#ffa500'; 
                 } else if (nextState === 2) {

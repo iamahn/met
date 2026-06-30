@@ -42,14 +42,14 @@ body {
 
 .rect-box {
     background-color: #373737; 
-    height: 180px;
+    height: 120px;
     border: 4px solid #333333; 
     border-radius: 10px;
     display: flex;
     align-items: center;      
     justify-content: center;   
     font-family: 'Jersey 10', sans-serif;
-    font-size: 140px;
+    font-size: 120px;
     color: #33ff33;            
     letter-spacing: 15px;
     text-shadow: 
@@ -58,7 +58,12 @@ body {
 }
 
 /* 비율이 겹쳐서 깨지던 중복 코드를 제거하고 정확하게 다시 선언합니다 */
-.rect-box.small  { flex: 1; }
+.rect-box.small  { flex: 1; 
+    font-family: 'Jersey 10', sans-serif;
+    font-size: 70px;
+
+
+}
 .rect-box.medium { flex: 2.3; }
 .rect-box.large  { flex: 3.2; }
 
@@ -306,22 +311,27 @@ body {
     filter: brightness(1.03) contrast(1.03);
 }
 
-/* 3. 완전히 클릭했을 때 베이스 판 안으로 푹 눌려 들어가는 쾌감 효과 */
+/* 1. [기존 :active 제거 및 덮어쓰기] active 효과는 스케일(눌리는 느낌)만 남겨둡니다 */
 .circle-box:active {
     transform: scale(0.96);
-    /* 톤이 다운되며 수축하는 물리적 변화 */
-    background-image: linear-gradient(180deg, #949090, #787474); 
-    box-shadow:
-        0 1px 1px rgba(0, 0, 0, 0),
-        inset 0 5px 10px rgba(0, 0, 0, 0.65),       /* 깊게 파이는 음각 그림자 */
-        inset 0 2px 4px rgba(0, 0, 0, 0.4),
-        inset 0 -1px 3px rgba(255, 255, 255, 0.2);
+    /* 기존의 background-image, box-shadow 변경 코드는 제거합니다 */
 }
 
+/* 2. [신규 추가] 락킹(Latching) 스위치가 켜졌을 때의 활성화 상태 스타일 */
+.circle-box.selected {
+    /* 톤이 다운되며 완벽하게 베이스 판 안으로 푹 들어가서 고정된 상태 표현 */
+    background-image: linear-gradient(180deg,  #9ee5f5, #22859c) !important; 
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0),
+        inset 0 5px 10px rgba(0, 0, 0, 0.65),       /* 깊게 파이는 고정 음각 그림자 */
+        inset 0 2px 4px rgba(0, 0, 0, 0.4),
+        inset 0 -1px 3px rgba(255, 255, 255, 0.2) !important;
+}
 
-/* 눌렸을 때 알맹이 이미지도 덩달아 살짝 작아지며 리얼함 극대화 */
-.circle-box:active::after {
+/* 3. [신규 추가] 활성화되었을 때 알맹이 이미지도 푹 파인 곳에 박혀있도록 유지 */
+.circle-box.selected::after {
     transform: scale(0.92);
+    opacity: 0.95;
 }
 
 .volume-slider {
@@ -338,7 +348,7 @@ body {
 .bottom-container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 5px;
     width: 100%; /* 찌그러짐 방지 가로 확보 */
 }
 
@@ -349,10 +359,24 @@ body {
 }
 
 .grid-label {
-    width: 50px;
-    font-size: 16px;
+    width: 65px;         /* 💡 이미지가 들어가므로 가로폭을 기존 50px에서 65px~70px 정도로 살짝 넓혀줍니다 */
+    font-size: 14px;
     font-weight: bold;
     color: #000000;
+    
+    display: flex;       /* 이미지와 텍스트를 가로로 나란히 배치 */
+    flex-direction: column; /* 💡 만약 위아래 배치 원하시면 column, 좌우 배치 원하시면 row로 쓰세요! */
+    align-items: center; /* 중앙 정렬 */
+    justify-content: center;
+    gap: 4px;            /* 이미지와 글자 사이의 간격 */
+}
+
+/* 🛠️ 추가: 격자판 라인 안의 썸네일 이미지 크기 제어 */
+.grid-label img {
+    width: 50px;         /* 썸네일 너비 (원하는 크기로 조절 가능) */
+    height: 50px;        /* 썸네일 높이 */
+    object-fit: contain; /* 이미지 비율 유지 */
+    opacity: 0.8;        /* 너무 튀지 않게 은은한 투명도 부여 */
 }
 
 .grid-wrapper {
@@ -370,7 +394,7 @@ body {
 .grid-cell {
     flex: 1;
     height: 55px;
-    background-color: white;
+    background-color: darkkhaki;
     border-radius: 4px;
     box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1);
 }
