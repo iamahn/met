@@ -2,384 +2,375 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-<!-- Google Fonts에서 Jersey 15 Charted 폰트 불러오기 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15+Charted&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15+Charted&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <title>new metronome</title>
-    <style>
-       
-        
-    </style>
-    
 </head>
 <body>
 
-    <!-- 중앙에 배치되는 메인 컨테이너 박스 -->
-    <div class="app-container">
+    <div class="main-wrapper">
         
+        <div class="app-container">
+            <div class="top-row">
+                <div class="rect-box small" id="btn-signature" style="cursor: pointer;">
+                    <span id="sig-value">4/4</span>
+                </div>
+                
+                <div class="rect-box medium">
+                    <span class="note-symbol">♩</span>=<span id="bpm-value">060</span>
+                </div>
+                
+                <div class="rect-box large">EMPTY</div>
+            </div>
 
+            <div class="control-row">
+                <button id="btn-clear" class="clear-btn">
+                    <div class="button-outer">
+                        <div class="button-inner">
+                            <span>CLEAR</span>
+                        </div>
+                    </div>
+                </button>   
 
-<!-- 1. 상단 직사각형 행 -->
-<div class="top-row">
-    <div class="rect-box small" id="btn-signature" style="cursor: pointer;">
-        <span id="sig-value">4/4</span>
-    </div>
-    
-    <div class="rect-box medium">
-        <span class="note-symbol">♩</span>=<span id="bpm-value">060</span>
-    </div>
-    
-    <div class="rect-box large">BASIC</div>
-</div>
+                <div class="tempo-controller">
+                    <button id="btn-minus" class="arrow-btn minus-btn"></button>
+                    <button id="btn-tap" class="control-btn tap-btn">TAP</button>
+                    <button id="btn-plus" class="arrow-btn plus-btn"></button>
+                </div>
 
-<!-- [수정됨] 제어 버튼 행 -->
-<div class="control-row">
-    <button id="btn-clear" class="clear-btn">
-        <div class="button-outer">
-            <div class="button-inner">
-                <span>CLEAR</span>
+                <button id="btn-play" class="control-btn play-btn">PLAY/STOP</button>
+            </div>
+
+            <div class="middle-row">
+                <div class="circle-container">
+                    <div class="circle-box"></div>
+                    <select class="dropdown-menu">
+                        <option value="empty">empty</option>
+                        <option value="click01">click01</option>
+                        <option value="click02">click02</option>
+                        <option value="click03" selected>click03</option>
+                        <option value="click04">click04</option>
+                        <option value="click05">click05</option>
+                        <option value="click06">click06</option>
+                        <option value="click07">click07</option>
+                        <option value="click08">click08</option>
+                        <option value="click09">click09</option>
+                        <option value="click10">click10</option>
+                        <option value="hat_close">hat-close</option>
+                        <option value="hat_open">hat-open</option>            
+                        <option value="crash">crash</option>   
+                        <option value="ride">ride</option>            
+                        <option value="kick">kick</option>
+                        <option value="snare">snare</option>
+                        <option value="tom01">tom01</option>
+                        <option value="tom02">tom02</option>
+                        <option value="tom03">tom03</option>
+                        <option value="tom04">tom04</option>
+                        <option value="tom05">tom05</option>
+                        <option value="tom06">tom06</option>                     
+                        <option value="clap">clap</option>
+                        <option value="shaker">shaker</option>
+                        <option value="human1">human01</option>
+                        <option value="human2">human02</option>
+                        <option value="human3">human03</option>
+                    </select>
+                    <input type="range" class="volume-slider" min="0" max="100" value="80">
+                </div>
+
+                <div class="circle-container">
+                    <div class="circle-box"></div>
+                    <select class="dropdown-menu">
+                        <option value="empty">empty</option>
+                        <option value="click01">click01</option>
+                        <option value="click02">click02</option>
+                        <option value="click03">click03</option>
+                        <option value="click04">click04</option>
+                        <option value="click05">click05</option>
+                        <option value="click06">click06</option>
+                        <option value="click07">click07</option>
+                        <option value="click08">click08</option>
+                        <option value="click09">click09</option>
+                        <option value="click10">click10</option>
+                        <option value="hat_close">hat-close</option>
+                        <option value="hat_open">hat-open</option>            
+                        <option value="crash">crash</option>   
+                        <option value="ride">ride</option>            
+                        <option value="kick">kick</option>
+                        <option value="snare">snare</option>
+                        <option value="tom01">tom01</option>
+                        <option value="tom02">tom02</option>
+                        <option value="tom03">tom03</option>
+                        <option value="tom04">tom04</option>
+                        <option value="tom05">tom05</option>
+                        <option value="tom06">tom06</option>                      
+                        <option value="clap">clap</option>
+                        <option value="shaker">shaker</option> 
+                        <option value="human1">human01</option>
+                        <option value="human2">human02</option>
+                        <option value="human3">human03</option>
+                    </select>
+                    <input type="range" class="volume-slider" min="0" max="100" value="80">
+                </div>
+
+                <div class="circle-container">
+                    <div class="circle-box"></div>
+                    <select class="dropdown-menu">
+                        <option value="empty">empty</option>
+                        <option value="click01">click01</option>
+                        <option value="click02">click02</option>
+                        <option value="click03">click03</option>
+                        <option value="click04">click04</option>
+                        <option value="click05">click05</option>
+                        <option value="click06">click06</option>
+                        <option value="click07">click07</option>
+                        <option value="click08">click08</option>
+                        <option value="click09">click09</option>
+                        <option value="click10">click10</option>
+                        <option value="hat_close">hat-close</option>
+                        <option value="hat_open">hat-open</option>            
+                        <option value="crash">crash</option>   
+                        <option value="ride">ride</option>            
+                        <option value="kick">kick</option>
+                        <option value="snare">snare</option>
+                        <option value="tom01">tom01</option>
+                        <option value="tom02">tom02</option>
+                        <option value="tom03">tom03</option>
+                        <option value="tom04">tom04</option>
+                        <option value="tom05">tom05</option>
+                        <option value="tom06">tom06</option>                        
+                        <option value="clap">clap</option>
+                        <option value="shaker">shaker</option>
+                        <option value="human1">human01</option>
+                        <option value="human2">human02</option>
+                        <option value="human3">human03</option>    
+                    </select>
+                    <input type="range" class="volume-slider" min="0" max="100" value="80">
+                </div>
+
+                <div class="circle-container">
+                    <div class="circle-box"></div>
+                    <select class="dropdown-menu">
+                        <option value="empty">empty</option>
+                        <option value="click01">click01</option>
+                        <option value="click02">click02</option>
+                        <option value="click03">click03</option>
+                        <option value="click04">click04</option>
+                        <option value="click05">click05</option>
+                        <option value="click06">click06</option>
+                        <option value="click07">click07</option>
+                        <option value="click08">click08</option>
+                        <option value="click09">click09</option>
+                        <option value="click10">click10</option>
+                        <option value="hat_close">hat-close</option>
+                        <option value="hat_open">hat-open</option>            
+                        <option value="crash">crash</option>   
+                        <option value="ride">ride</option>            
+                        <option value="kick">kick</option>
+                        <option value="snare">snare</option>
+                        <option value="tom01">tom01</option>
+                        <option value="tom02">tom02</option>
+                        <option value="tom03">tom03</option>
+                        <option value="tom04">tom04</option>
+                        <option value="tom05">tom05</option>
+                        <option value="tom06">tom06</option>                     
+                        <option value="clap">clap</option>
+                        <option value="shaker">shaker</option>
+                        <option value="human1">human01</option>
+                        <option value="human2">human02</option>
+                        <option value="human3">human03</option>               
+                    </select>
+                    <input type="range" class="volume-slider" min="0" max="100" value="80">
+                </div>
+
+                <div class="circle-container">
+                    <div class="circle-box"></div>
+                    <select class="dropdown-menu">
+                        <option value="empty">empty</option>
+                        <option value="click01">click01</option>
+                        <option value="click02">click02</option>
+                        <option value="click03">click03</option>
+                        <option value="click04">click04</option>
+                        <option value="click05">click05</option>
+                        <option value="click06">click06</option>
+                        <option value="click07">click07</option>
+                        <option value="click08">click08</option>
+                        <option value="click09">click09</option>
+                        <option value="click10">click10</option>
+                        <option value="hat_close">hat-close</option>
+                        <option value="hat_open">hat-open</option>            
+                        <option value="crash">crash</option>   
+                        <option value="ride">ride</option>            
+                        <option value="kick">kick</option>
+                        <option value="snare">snare</option>
+                        <option value="tom01">tom01</option>
+                        <option value="tom02">tom02</option>
+                        <option value="tom03">tom03</option>
+                        <option value="tom04">tom04</option>
+                        <option value="tom05">tom05</option>
+                        <option value="tom06">tom06</option>                       
+                        <option value="clap">clap</option>
+                        <option value="shaker">shaker</option>
+                        <option value="human1">human01</option>
+                        <option value="human2">human02</option>
+                        <option value="human3">human03</option>                  
+                    </select>
+                    <input type="range" class="volume-slider" min="0" max="100" value="80">
+                </div>
+
+                <div class="circle-container">
+                    <div class="circle-box"></div>
+                    <select class="dropdown-menu">
+                        <option value="empty">empty</option>
+                        <option value="click01">click01</option>
+                        <option value="click02">click02</option>
+                        <option value="click03">click03</option>
+                        <option value="click04">click04</option>
+                        <option value="click05">click05</option>
+                        <option value="click06">click06</option>
+                        <option value="click07">click07</option>
+                        <option value="click08">click08</option>
+                        <option value="click09">click09</option>
+                        <option value="click10">click10</option>
+                        <option value="hat_close">hat-close</option>
+                        <option value="hat_open">hat-open</option>            
+                        <option value="crash">crash</option>   
+                        <option value="ride">ride</option>            
+                        <option value="kick">kick</option>
+                        <option value="snare">snare</option>
+                        <option value="tom01">tom01</option>
+                        <option value="tom02">tom02</option>
+                        <option value="tom03">tom03</option>
+                        <option value="tom04">tom04</option>
+                        <option value="tom05">tom05</option>
+                        <option value="tom06">tom06</option>                       
+                        <option value="clap">clap</option>
+                        <option value="shaker">shaker</option> 
+                        <option value="human1">human01</option>
+                        <option value="human2">human02</option>
+                        <option value="human3">human03</option>                 
+                    </select>
+                    <input type="range" class="volume-slider" min="0" max="100" value="80">
+                </div>
+
+                <div class="circle-container">
+                    <div class="circle-box"></div>
+                    <select class="dropdown-menu">
+                        <option value="empty">empty</option>
+                        <option value="click01">click01</option>
+                        <option value="click02">click02</option>
+                        <option value="click03">click03</option>
+                        <option value="click04">click04</option>
+                        <option value="click05">click05</option>
+                        <option value="click06">click06</option>
+                        <option value="click07">click07</option>
+                        <option value="click08">click08</option>
+                        <option value="click09">click09</option>
+                        <option value="click10">click10</option>
+                        <option value="hat_close">hat-close</option>
+                        <option value="hat_open">hat-open</option>            
+                        <option value="crash">crash</option>   
+                        <option value="ride">ride</option>            
+                        <option value="kick">kick</option>
+                        <option value="snare">snare</option>
+                        <option value="tom01">tom01</option>
+                        <option value="tom02">tom02</option>
+                        <option value="tom03">tom03</option>
+                        <option value="tom04">tom04</option>
+                        <option value="tom05">tom05</option>
+                        <option value="tom06">tom06</option>                        
+                        <option value="clap">clap</option>
+                        <option value="shaker">shaker</option>
+                        <option value="human1">human01</option>
+                        <option value="human2">human02</option>
+                        <option value="human3">human03</option>                
+                    </select>
+                    <input type="range" class="volume-slider" min="0" max="100" value="80">
+                </div>
+            </div>
+
+            <div class="bottom-container">
+                <div class="grid-line progress-line">
+                    <div class="grid-label"></div>
+                    <div class="progress-bar-container">
+                        <div id="beat-progress-bar"></div>
+                    </div>
+                </div>
+
+                <div class="grid-line">
+                    <div class="grid-label">
+                        <img src="img/32nd.png" alt="icon">
+                    </div>
+                    <div class="grid-wrapper">
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-line">
+                    <div class="grid-label">
+                        <img src="img/6th.png" alt="icon">
+                    </div>
+                    <div class="grid-wrapper">
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-line">
+                    <div class="grid-label">
+                        <img src="img/16th.png" alt="icon">
+                    </div>
+                    <div class="grid-wrapper">
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-group">
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </button>   
 
-    <div class="tempo-controller">
-        <button id="btn-minus" class="arrow-btn minus-btn"></button>
-        <button id="btn-tap" class="control-btn tap-btn">TAP</button>
-        <button id="btn-plus" class="arrow-btn plus-btn"></button>
-    </div>
-
-    <button id="btn-play" class="control-btn play-btn">PLAY/STOP</button>
-</div>
-
-<!-- 중간 원형 행 전체를 이 구조로 변경해 주세요 -->
-<div class="middle-row">
-    <!-- 1번째 원형 + 드롭다운 -->
-    <div class="circle-container">
-        <div class="circle-box"></div>
-        <select class="dropdown-menu">
-            <option value="empty">empty</option>
-            <option value="click01">click01</option>
-            <option value="click02">click02</option>
-            <option value="click03" selected>click03</option>
-            <option value="click04">click04</option>
-            <option value="click05">click05</option>
-            <option value="click06">click06</option>
-            <option value="click07">click07</option>
-            <option value="click08">click08</option>
-            <option value="click09">click09</option>
-            <option value="click10">click10</option>
-            <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>            
-            <option value="crash">crash</option>   
-            <option value="ride">ride</option>            
-            <option value="kick">kick</option>
-            <option value="snare">snare</option>
-            <option value="tom01">tom01</option>
-            <option value="tom02">tom02</option>
-            <option value="tom03">tom03</option>
-            <option value="tom04">tom04</option>
-            <option value="tom05">tom05</option>
-            <option value="tom06">tom06</option>                     
-            <option value="clap">clap</option>
-            <option value="shaker">shaker</option>
-            <option value="human1">human01</option>
-            <option value="human2">human02</option>
-            <option value="human3">human03</option>
-        </select>
-        <input type="range" class="volume-slider" min="0" max="100" value="80">
-    </div>
-
-    <!-- 2번째 원형 + 드롭다운 -->
-    <div class="circle-container">
-        <div class="circle-box"></div>
-        <select class="dropdown-menu">
-            <option value="empty">empty</option>
-            <option value="click01">click01</option>
-            <option value="click02">click02</option>
-            <option value="click03">click03</option>
-            <option value="click04">click04</option>
-            <option value="click05">click05</option>
-            <option value="click06">click06</option>
-            <option value="click07">click07</option>
-            <option value="click08">click08</option>
-            <option value="click09">click09</option>
-            <option value="click10">click10</option>
-            <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>            
-            <option value="crash">crash</option>   
-            <option value="ride">ride</option>            
-            <option value="kick">kick</option>
-            <option value="snare">snare</option>
-            <option value="tom01">tom01</option>
-            <option value="tom02">tom02</option>
-            <option value="tom03">tom03</option>
-            <option value="tom04">tom04</option>
-            <option value="tom05">tom05</option>
-            <option value="tom06">tom06</option>                      
-            <option value="clap">clap</option>
-            <option value="shaker">shaker</option> 
-            <option value="human1">human01</option>
-            <option value="human2">human02</option>
-            <option value="human3">human03</option>
-        </select>
-                <input type="range" class="volume-slider" min="0" max="100" value="80">
-        
-    </div>
-
-    <!-- 3번째, 4번째, 5번째도 동일한 방식으로 구성 가능합니다 -->
-    <div class="circle-container">
-        <div class="circle-box"></div>
-        <select class="dropdown-menu">
-            <option value="empty">empty</option>
-            <option value="click01">click01</option>
-            <option value="click02">click02</option>
-            <option value="click03">click03</option>
-            <option value="click04">click04</option>
-            <option value="click05">click05</option>
-            <option value="click06">click06</option>
-            <option value="click07">click07</option>
-            <option value="click08">click08</option>
-            <option value="click09">click09</option>
-            <option value="click10">click10</option>
-            <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>            
-            <option value="crash">crash</option>   
-            <option value="ride">ride</option>            
-            <option value="kick">kick</option>
-            <option value="snare">snare</option>
-            <option value="tom01">tom01</option>
-            <option value="tom02">tom02</option>
-            <option value="tom03">tom03</option>
-            <option value="tom04">tom04</option>
-            <option value="tom05">tom05</option>
-            <option value="tom06">tom06</option>                        
-            <option value="clap">clap</option>
-            <option value="shaker">shaker</option>
-            <option value="human1">human01</option>
-            <option value="human2">human02</option>
-            <option value="human3">human03</option>    
-        </select>
-        <input type="range" class="volume-slider" min="0" max="100" value="80">
-    </div>
-    <div class="circle-container">
-        <div class="circle-box"></div>
-        <select class="dropdown-menu">
-            <option value="empty">empty</option>
-            <option value="click01">click01</option>
-            <option value="click02">click02</option>
-            <option value="click03">click03</option>
-            <option value="click04">click04</option>
-            <option value="click05">click05</option>
-            <option value="click06">click06</option>
-            <option value="click07">click07</option>
-            <option value="click08">click08</option>
-            <option value="click09">click09</option>
-            <option value="click10">click10</option>
-            <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>            
-            <option value="crash">crash</option>   
-            <option value="ride">ride</option>            
-            <option value="kick">kick</option>
-            <option value="snare">snare</option>
-            <option value="tom01">tom01</option>
-            <option value="tom02">tom02</option>
-            <option value="tom03">tom03</option>
-            <option value="tom04">tom04</option>
-            <option value="tom05">tom05</option>
-            <option value="tom06">tom06</option>                     
-            <option value="clap">clap</option>
-            <option value="shaker">shaker</option>
-            <option value="human1">human01</option>
-            <option value="human2">human02</option>
-            <option value="human3">human03</option>               
-        </select>
-        <input type="range" class="volume-slider" min="0" max="100" value="80">
-    </div>
-    <div class="circle-container">
-        <div class="circle-box"></div>
-        <select class="dropdown-menu">
-            <option value="empty">empty</option>
-            <option value="click01">click01</option>
-            <option value="click02">click02</option>
-            <option value="click03">click03</option>
-            <option value="click04">click04</option>
-            <option value="click05">click05</option>
-            <option value="click06">click06</option>
-            <option value="click07">click07</option>
-            <option value="click08">click08</option>
-            <option value="click09">click09</option>
-            <option value="click10">click10</option>
-            <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>            
-            <option value="crash">crash</option>   
-            <option value="ride">ride</option>            
-            <option value="kick">kick</option>
-            <option value="snare">snare</option>
-            <option value="tom01">tom01</option>
-            <option value="tom02">tom02</option>
-            <option value="tom03">tom03</option>
-            <option value="tom04">tom04</option>
-            <option value="tom05">tom05</option>
-            <option value="tom06">tom06</option>                       
-            <option value="clap">clap</option>
-            <option value="shaker">shaker</option>
-            <option value="human1">human01</option>
-            <option value="human2">human02</option>
-            <option value="human3">human03</option>                  
-        </select>
-        <input type="range" class="volume-slider" min="0" max="100" value="80">
-    </div>
-        <div class="circle-container">
-        <div class="circle-box"></div>
-        <select class="dropdown-menu">
-            <option value="empty">empty</option>
-            <option value="click01">click01</option>
-            <option value="click02">click02</option>
-            <option value="click03">click03</option>
-            <option value="click04">click04</option>
-            <option value="click05">click05</option>
-            <option value="click06">click06</option>
-            <option value="click07">click07</option>
-            <option value="click08">click08</option>
-            <option value="click09">click09</option>
-            <option value="click10">click10</option>
-            <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>            
-            <option value="crash">crash</option>   
-            <option value="ride">ride</option>            
-            <option value="kick">kick</option>
-            <option value="snare">snare</option>
-            <option value="tom01">tom01</option>
-            <option value="tom02">tom02</option>
-            <option value="tom03">tom03</option>
-            <option value="tom04">tom04</option>
-            <option value="tom05">tom05</option>
-            <option value="tom06">tom06</option>                       
-            <option value="clap">clap</option>
-            <option value="shaker">shaker</option> 
-            <option value="human1">human01</option>
-            <option value="human2">human02</option>
-            <option value="human3">human03</option>                 
-        </select>
-        <input type="range" class="volume-slider" min="0" max="100" value="80">
-    </div>
-        <div class="circle-container">
-        <div class="circle-box"></div>
-        <select class="dropdown-menu">
-            <option value="empty">empty</option>
-            <option value="click01">click01</option>
-            <option value="click02">click02</option>
-            <option value="click03">click03</option>
-            <option value="click04">click04</option>
-            <option value="click05">click05</option>
-            <option value="click06">click06</option>
-            <option value="click07">click07</option>
-            <option value="click08">click08</option>
-            <option value="click09">click09</option>
-            <option value="click10">click10</option>
-            <option value="hat_close">hat-close</option>
-            <option value="hat_open">hat-open</option>            
-            <option value="crash">crash</option>   
-            <option value="ride">ride</option>            
-            <option value="kick">kick</option>
-            <option value="snare">snare</option>
-            <option value="tom01">tom01</option>
-            <option value="tom02">tom02</option>
-            <option value="tom03">tom03</option>
-            <option value="tom04">tom04</option>
-            <option value="tom05">tom05</option>
-            <option value="tom06">tom06</option>                        
-            <option value="clap">clap</option>
-            <option value="shaker">shaker</option>
-            <option value="human1">human01</option>
-            <option value="human2">human02</option>
-            <option value="human3">human03</option>                
-        </select>
-        <input type="range" class="volume-slider" min="0" max="100" value="80">
-    </div>
-</div>
-
-        <!-- 3. 하단 그리드 컨테이너 -->
-        <div class="bottom-container">
-        <!-- ✨ [신규 추가] 박자 흐름 상태 Bar 라인 -->
-    <div class="grid-line progress-line">
-    <div class="grid-label"></div>
-    <div class="progress-bar-container">
-        <div id="beat-progress-bar"></div>
-    </div>
-</div>
-
-
-        
-
-            <!-- [32 라인] 8개씩 4그룹 = 총 32개 상자 -->
-            <div class="grid-line">
-                <div class="grid-label">
-                <img src="img/32nd.png" alt="icon">
-                </div>
-                <div class="grid-wrapper">
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                </div>
+        <div class="browser-container">
+            <div class="browser-header">
+                <button id="browser-save" class="browser-btn save">SAVE</button>
+                <button id="browser-load" class="browser-btn load">LOAD</button>
+                <button id="browser-del" class="browser-btn del">DEL</button>
             </div>
-
-            <!-- [6 라인] 6개씩 4그룹 = 총 24개 상자 -->
-            <div class="grid-line">
-                <div class="grid-label">
-				<img src="img/6th.png" alt="icon">
+            <div id="browser-list" class="browser-list-box">
                 </div>
-                <div class="grid-wrapper">
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- [16 라인] 4개씩 4그룹 = 총 16개 상자 -->
-            <div class="grid-line">
-                <div class="grid-label">
-                				<img src="img/16th.png" alt="icon">
-                </div>
-                <div class="grid-wrapper">
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                    <div class="grid-group">
-                        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-                    </div>
-                </div>
-            </div>
-
         </div>
+
     </div>
     <script type="text/javascript" src="app.js"></script> 
-
 </body>
 </html>
