@@ -366,7 +366,17 @@ function togglePlayback() {
         function updateProgressBarLoop() {
             if (!isPlaying) return;
             const progressPercent = (currentBeat / maxTicks) * 100;
-            if (progressBar) progressBar.style.width = `${progressPercent}%`;
+            if (progressBar) {
+				progressBar.style.width = `${progressPercent}%`;
+				// 2. ⚡ [핵심] 대시(Dash) 스타일을 위한 반복 선형 그래디언트 주입
+				progressBar.style.background = `repeating-linear-gradient(
+					90deg,
+				    rgba(51, 255, 51, 0.5),
+				    rgba(51, 255, 51, 0.5) 5px,
+				    transparent 5px,
+				    transparent 7px
+					)`;
+			}		
             animationFrameId = requestAnimationFrame(updateProgressBarLoop);
         }
         animationFrameId = requestAnimationFrame(updateProgressBarLoop);
