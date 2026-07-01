@@ -18,20 +18,20 @@ body {
     font-family: 'Jersey 10', sans-serif;
 }
 
-/* ⚡ [신규 추가] 본체 패널과 우측 브라우저판을 수평 병렬 결합하는 멀티 플렉스 컨테이너 */
+/* ⚡ 본체 패널과 우측 브라우저판을 수평 병렬 결합하는 멀티 플렉스 컨테이너 */
 .main-wrapper {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    gap: 25px; /* 두 장치 사이의 일정한 간격 */
+    gap: 25px; 
     width: 100%;
-    max-width: 1350px; /* 브라우저가 확장되는 폭만큼 총량 증가 */
+    max-width: 1350px; 
 }
 
 /* 2. 본체 메인 컨테이너 */
 .app-container {
     background-color: gold;
-    flex: 1; /* 유연한 크기 배정 */
+    flex: 1; 
     max-width: 1000px;
     padding: 40px;
     display: flex;
@@ -459,7 +459,7 @@ body {
 }
 
 /* =========================================================================
-   ⚡ [신규 추가] 패턴 브라우저 전용 고급 디자인 시트 (사이버 메탈 테마)
+   ⚡ 패턴 브라우저 전용 고급 디자인 시트 (사이버 메탈 테마)
    ========================================================================= */
 .browser-container {
     width: 320px;
@@ -470,16 +470,14 @@ body {
     flex-direction: column;
     gap: 15px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4), inset 0 1px 3px rgba(255,255,255,0.1);
-    height: 615px; /* 드럼머신 본체와 균형을 맞춘 세로 길이 */
+    height: 615px; 
 }
 
-/* 상단 컨트롤 영역 */
 .browser-header {
     display: flex;
     gap: 8px;
 }
 
-/* 브라우저 상단 버튼 공통 규격 */
 .browser-btn {
     all: unset;
     flex: 1;
@@ -501,12 +499,10 @@ body {
     transform: scale(0.96);
 }
 
-/* 각 버튼 개별 아이덴티티 색상 */
 .browser-btn.save { background-image: linear-gradient(180deg, #eaeaea, #9e9999); }
 .browser-btn.load { background-image: linear-gradient(180deg, #eaeaea, #9e9999); }
 .browser-btn.del  { background-image: linear-gradient(180deg, #eaeaea, #9e9999); }
 
-/* 패턴 리스트 아웃라인 박스 */
 .browser-list-box {
     flex: 1;
     background-color: #373737;
@@ -516,16 +512,14 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    overflow-y: auto; /* 내용이 많아지면 스크롤바 활성화 */
+    overflow-y: auto; 
     box-shadow: inset 0 3px 6px rgba(0,0,0,0.5);
 }
 
-/* 리스트 커스텀 스크롤바 정밀 디자인 */
 .browser-list-box::-webkit-scrollbar { width: 6px; }
 .browser-list-box::-webkit-scrollbar-track { background: #191919; }
 .browser-list-box::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
 
-/* 리스트 아이템 개별 상자 */
 .pattern-item {
     display: flex;
     align-items: center;
@@ -542,18 +536,16 @@ body {
     border-color: #666;
 }
 
-/* 선택된 슬롯 강조 표시 */
 .pattern-item.selected {
     background-color: #3d4f3d;
     border-color: #52c234;
     box-shadow: 0 0 8px rgba(82, 194, 52, 0.3);
 }
 
-/* 더블클릭 및 수정이 가능한 내부 인풋박스 단독 스타일링 */
 .pattern-name-input {
     background: transparent;
     border: none;
-    color: #33ff33; /* LED 스크린과 싱크를 맞춘 녹색 글씨 */
+    color: #33ff33; 
     font-family: 'Jersey 10', sans-serif;
     font-size: 30px;
     width: 100%;
@@ -562,7 +554,6 @@ body {
     padding: 2px;
 }
 
-/* 수정 모드로 전환되어 활성화되었을 때 */
 .pattern-name-input:focus {
     background-color: #111;
     border-bottom: 2px solid #33ff33;
@@ -571,7 +562,7 @@ body {
 
 
 /* =========================================================================
-   ⚡ 모바일 환경 (화면 폭 768px 이하) 전용 반응형 레이아웃
+   ⚡ 모바일 환경 (화면 폭 768px 이하) 전용 반응형 레이아웃 정밀 보정본
    ========================================================================= */
 @media (max-width: 768px) {
     /* 전체 패널 정렬 (본체 아래에 브라우저 배치) */
@@ -586,105 +577,142 @@ body {
         padding: 20px;
         gap: 20px;
         width: 100%;
+        overflow: hidden; /* 본체 밖으로 내용물이 튀어나가는 것 방지 */
     }
 
-    /* 1. TOP-ROW: 2줄 배치 (small+medium / large) */
+    /* 1. TOP-ROW: 2줄 배치 보정 */
     .top-row {
         display: grid;
-        grid-template-columns: 1fr 2.3fr; /* 기존 비율 유지하며 2열 배치 */
+        grid-template-columns: 1fr 2.3fr; 
         gap: 15px;
     }
+    .rect-box {
+        height: 85px;       
+        font-size: 40px;    
+        letter-spacing: 5px;
+    }
     .rect-box.large {
-        grid-column: span 2; /* 라지 박스만 다음 줄 전체 차지 */
-        height: 100px;
-        font-size: 50px;
+        grid-column: span 2; 
+        font-size: 36px;
+        letter-spacing: 2px;
     }
     .rect-box.small, .rect-box.medium {
-        height: 90px;
-        font-size: 50px;
+        font-size: 34px;
+        letter-spacing: 1px;
+    }
+    .rect-box.medium .note-symbol {
+        font-size: 24px;
     }
 
-    /* 2. CONTROL-ROW: 2줄 배치 (clear+tempo / play) */
+    /* 2. CONTROL-ROW: 2줄 배치 보정 */
     .control-row {
         display: grid;
         grid-template-columns: 1fr 2.3fr;
         gap: 15px;
     }
     .tempo-controller {
-        width: 100%; /* 부모 너비에 맞춤 */
+        width: 100% !important; 
     }
     .play-btn {
-        grid-column: span 2; /* 플레이 버튼만 다음 줄 전체 차지 */
+        grid-column: span 2; 
     }
 
-    /* 3. MIDDLE-ROW: 2줄 배치 (4개 / 3개) */
+    /* 3. MIDDLE-ROW: 2줄 배치 */
     .middle-row {
         display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 기본 4열 구조 */
+        grid-template-columns: repeat(4, 1fr); 
         gap: 15px 10px;
         justify-content: center;
     }
-    /* 5번째부터 7번째 패드는 자동으로 아래로 내려가며, 4열 중 3열만 차지하게 됨 */
     .middle-row .circle-container {
         width: 100%;
     }
     .circle-box {
-        width: 70px; /* 모바일에 맞게 패드 크기 축소 */
-        height: 70px;
+        width: 65px; 
+        height: 65px;
+    }
+    .volume-slider {
+        width: 60px; 
+    }
+    .dropdown-menu {
+        font-size: 14px;
+        height: 24px;
+        line-height: 24px;
+        width: 100%;
     }
 
-    /* 4. BOTTOM-CONTAINER (핵심): 그룹별 줄바꿈 분리 매커니즘 */
+    /* 4. BOTTOM-CONTAINER: 💥 프로그레스 바 이탈 차단 및 완전 정밀 정렬 */
     .bottom-container {
         display: flex;
         flex-direction: column;
-        gap: 20px; /* 줄 사이 간격 확대 */
+        gap: 25px; 
+        width: 100%;
     }
 
-    /* 각 음표 라인을 내부적으로 Grid 구조로 전환 */
     .grid-line {
         display: grid;
-        grid-template-columns: 50px 1fr; /* 라벨 영역 확보 */
+        grid-template-columns: 55px 1fr; /* 라벨 폭 고정, 우측은 가변 */
         gap: 10px;
+        width: 100%;
     }
 
-    /* ⚡ 1,2그룹과 3,4그룹을 위아래로 쪼개는 핵심 그리드 배치 */
     .grid-wrapper {
         display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 가로로 2개 그룹씩 배정 */
-        gap: 10px;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 12px 10px;
+        width: 100%;
     }
 
-    /* 1,2그룹은 첫 번째 줄에 나란히 배치 */
+    /* 1,2그룹과 3,4그룹 분리 */
     .grid-wrapper .grid-group:nth-child(1),
     .grid-wrapper .grid-group:nth-child(2) {
         grid-row: 1;
     }
-
-    /* 3,4그룹은 강제로 두 번째 줄로 떨어뜨림 */
     .grid-wrapper .grid-group:nth-child(3),
     .grid-wrapper .grid-group:nth-child(4) {
         grid-row: 2;
     }
 
-    /* 프로그레스 바도 그리드 정렬에 맞춤 */
+    /* ⚡ 프로그레스 바 라인 쪼개짐 및 너비 100% 강제 유연화 */
     .progress-line {
         display: grid;
-        grid-template-columns: 50px 1fr;
+        grid-template-columns: 55px 1fr;
         gap: 10px;
+        width: 100%;
+    }
+    .progress-line .progress-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px 10px;
+        width: 100%;
+        min-width: 0; /* 내부 요소 때문에 늘어나는 현상 원천 차단 */
+    }
+    .progress-bar-container {
+        grid-column: span 2; 
+        width: 100% !important; /* 고정 너비 무력화 */
+        max-width: 100%;
+        height: 25px;
     }
 
     .grid-cell {
-        height: 40px; /* 터치하기 적당하면서 컴팩트한 높이 */
+        height: 38px; 
     }
 
+    .grid-label {
+        font-size: 11px;
+    }
     .grid-label img {
-        width: 35px;
-        height: 35px;
+        width: 32px;
+        height: 32px;
     }
 
-    /* 5. BROWSER-CONTAINER: 모바일 최적화 */
+    /* 5. BROWSER-CONTAINER */
     .browser-container {
         width: 100% !important;
         max-width: 100%;
+        height: 450px; 
+    }
+    .pattern-name-input {
+        font-size: 22px;
     }
 }

@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15+Charted&display=swap" rel="stylesheet">
@@ -293,8 +295,10 @@
             <div class="bottom-container">
                 <div class="grid-line progress-line">
                     <div class="grid-label"></div>
-                    <div class="progress-bar-container">
-                        <div id="beat-progress-bar"></div>
+                    <div class="progress-wrapper">
+                        <div class="progress-bar-container">
+                            <div id="beat-progress-bar"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -366,8 +370,7 @@
                 <button id="browser-load" class="browser-btn load">LOAD</button>
                 <button id="browser-del" class="browser-btn del">DEL</button>
             </div>
-            <div id="browser-list" class="browser-list-box">
-                </div>
+            <div id="browser-list" class="browser-list-box"></div>
         </div>
 
     </div>
