@@ -23,15 +23,19 @@
 
 <!-- 1. 상단 직사각형 행 -->
 <div class="top-row">
-    <div class="rect-box small"><span class="note-symbol">♩</span>=60</div>
-    <div class="rect-box medium">4/4</div>
-    <div class="rect-box large">060</div>
+    <div class="rect-box small" id="btn-signature" style="cursor: pointer;">
+        <span id="sig-value">4/4</span>
+    </div>
+    
+    <div class="rect-box medium">
+        <span class="note-symbol">♩</span>=<span id="bpm-value">060</span>
+    </div>
+    
+    <div class="rect-box large">BASIC</div>
 </div>
 
 <!-- [수정됨] 제어 버튼 행 -->
 <div class="control-row">
-    
-    <!-- 1. 고급 입체 CLEAR 버튼 (하나만 남김) -->
     <button id="btn-clear" class="clear-btn">
         <div class="button-outer">
             <div class="button-inner">
@@ -40,17 +44,14 @@
         </div>
     </button>   
 
-    <!-- 2. PLAY 버튼 -->
-    <button id="btn-play" class="control-btn play-btn">PLAY/STOP</button>
-    
-    <!-- 3. 템포 컨트롤러 영역 -->
     <div class="tempo-controller">
         <button id="btn-minus" class="arrow-btn minus-btn"></button>
         <button id="btn-tap" class="control-btn tap-btn">TAP</button>
         <button id="btn-plus" class="arrow-btn plus-btn"></button>
     </div>
-</div>
 
+    <button id="btn-play" class="control-btn play-btn">PLAY/STOP</button>
+</div>
 
 <!-- 중간 원형 행 전체를 이 구조로 변경해 주세요 -->
 <div class="middle-row">
@@ -61,7 +62,7 @@
             <option value="empty">empty</option>
             <option value="click01">click01</option>
             <option value="click02">click02</option>
-            <option value="click03">click03</option>
+            <option value="click03" selected>click03</option>
             <option value="click04">click04</option>
             <option value="click05">click05</option>
             <option value="click06">click06</option>
@@ -83,6 +84,9 @@
             <option value="tom06">tom06</option>                     
             <option value="clap">clap</option>
             <option value="shaker">shaker</option>
+            <option value="shaker">human01</option>
+            <option value="shaker">human02</option>
+            <option value="shaker">human03</option>
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
@@ -115,7 +119,10 @@
             <option value="tom05">tom05</option>
             <option value="tom06">tom06</option>                      
             <option value="clap">clap</option>
-            <option value="shaker">shaker</option>  
+            <option value="shaker">shaker</option> 
+            <option value="shaker">human01</option>
+            <option value="shaker">human02</option>
+            <option value="shaker">human03</option> 
         </select>
                 <input type="range" class="volume-slider" min="0" max="100" value="80">
         
@@ -149,7 +156,10 @@
             <option value="tom05">tom05</option>
             <option value="tom06">tom06</option>                        
             <option value="clap">clap</option>
-            <option value="shaker">shaker</option>    
+            <option value="shaker">shaker</option>
+            <option value="shaker">human01</option>
+            <option value="shaker">human02</option>
+            <option value="shaker">human03</option>     
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
@@ -180,7 +190,10 @@
             <option value="tom05">tom05</option>
             <option value="tom06">tom06</option>                     
             <option value="clap">clap</option>
-            <option value="shaker">shaker</option>      
+            <option value="shaker">shaker</option>
+            <option value="shaker">human01</option>
+            <option value="shaker">human02</option>
+            <option value="shaker">human03</option>                
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
@@ -211,7 +224,10 @@
             <option value="tom05">tom05</option>
             <option value="tom06">tom06</option>                       
             <option value="clap">clap</option>
-            <option value="shaker">shaker</option>     
+            <option value="shaker">shaker</option>
+            <option value="shaker">human01</option>
+            <option value="shaker">human02</option>
+            <option value="shaker">human03</option>                  
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
@@ -242,7 +258,10 @@
             <option value="tom05">tom05</option>
             <option value="tom06">tom06</option>                       
             <option value="clap">clap</option>
-            <option value="shaker">shaker</option>      
+            <option value="shaker">shaker</option> 
+            <option value="shaker">human01</option>
+            <option value="shaker">human02</option>
+            <option value="shaker">human03</option>                  
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
@@ -273,7 +292,10 @@
             <option value="tom05">tom05</option>
             <option value="tom06">tom06</option>                        
             <option value="clap">clap</option>
-            <option value="shaker">shaker</option>   
+            <option value="shaker">shaker</option>
+            <option value="shaker">human01</option>
+            <option value="shaker">human02</option>
+            <option value="shaker">human03</option>                
         </select>
         <input type="range" class="volume-slider" min="0" max="100" value="80">
     </div>
@@ -283,11 +305,13 @@
         <div class="bottom-container">
         <!-- ✨ [신규 추가] 박자 흐름 상태 Bar 라인 -->
     <div class="grid-line progress-line">
-        <div class="grid-label"></div> <!-- 레이블 공백용 (50px 정렬 맞춤) -->
-        <div class="progress-bar-container">
-            <div id="beat-progress-bar"></div>
-        </div>
+    <div class="grid-label"></div>
+    <div class="progress-bar-container">
+        <div id="beat-progress-bar"></div>
     </div>
+</div>
+
+
         
 
             <!-- [32 라인] 8개씩 4그룹 = 총 32개 상자 -->

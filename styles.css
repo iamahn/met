@@ -57,50 +57,56 @@ body {
         0 0 15px rgba(51, 255, 51, 0.3);
 }
 
-/* 비율이 겹쳐서 깨지던 중복 코드를 제거하고 정확하게 다시 선언합니다 */
-.rect-box.small  { flex: 1; 
-    font-family: 'Jersey 10', sans-serif;
-    font-size: 70px;
-
-
+/* 1/4, 2/4 등이 들어가는 small 박스 */
+.rect-box.small {
+    flex: 1;
+    font-size: 60px; /* 글자 크기를 살짝 다듬어 깔끔하게 배치 */
+    letter-spacing: 2px;
 }
-.rect-box .note-symbol {
-    font-size: 40px;       /* 💡 기존 140px의 절반 크기로 줄여 균형을 맞춥니다 (원하는 대로 조절 가능) */
-    display: inline-block; /* 미세한 위치 조정을 가능하게 만듭니다 */
-    vertical-align: middle;/* =60 텍스트와 위아래 중앙 정렬 */
-    margin-right: -10px;   /* 💡 음표가 작아지면서 생긴 오른쪽 빈 여백을 당겨서 좁혀줍니다 */
+/* ♩=060 이 들어가는 medium 박스 */
+.rect-box.medium {
+    flex: 2.3;
+    font-size: 75px; /* 기호와 숫자가 함께 들어가므로 크기를 축소 */
+    letter-spacing: 4px;
+}
+.rect-box.medium .note-symbol {
+    font-size: 45px;
+    vertical-align: middle;
     position: relative;
-    top: -5px;            /* 💡 글자들과 눈대중 높이가 안 맞으면 top 값을 +-로 조절해 보세요 */
+    top: -4px;
+    margin-right: 2px;
 }
 
-.rect-box.medium { flex: 2.3; }
-.rect-box.large  { flex: 3.2; }
-
-
+/* BASIC 문구가 들어갈 large 박스 */
+.rect-box.large {
+    flex: 3.2;
+    font-size: 65px; /* 영문 텍스트가 꽉 차게 보이도록 조정 */
+    letter-spacing: 5px;
+}
 /* ----------------------------------
    ROW 2: 제어 버튼 행 (CONTROL ROW) - 상단 전광판과 수직 정렬 일치
 ---------------------------------- */
+/* [수정] 2번째 행 (CONTROL ROW) */
 .control-row {
     display: flex;
     align-items: center;
-    gap: 40px; /* 상단 전광판 gap과 일치 */
+    gap: 40px; /* 상단 전광판 gap과 완벽 일치 */
+    width: 100%; /* 부모 너비를 꽉 채우도록 보장 */
 }
 
-/* [CLEAR 버튼] 상단 small(flex: 1)과 완벽 정렬 */
+/* [CLEAR 버튼] 상단 small(flex: 1) 영역에 매칭 */
 .clear-btn {
     all: unset; 
-    flex: 1;
+    flex: 1; /* 💡 기존 1.5에서 1로 변경 (상단 small과 일치) */
     height: 65px;
     cursor: pointer;
     position: relative;
     border-radius: 25px;
-
     background-color: rgba(0, 0, 0, 0.4);
     box-shadow: 
         -0.05em -0.05em 0.1em -0.05em rgba(5, 5, 5, 0.25),
         0.03em 0.03em 0.05em 0 rgba(5, 5, 5, 0.1);
 }
-
 .clear-btn .button-outer {
     position: relative;
     z-index: 1;
@@ -143,10 +149,10 @@ body {
     color: white;
 }
 
-/* [PLAY/STOP 버튼] 상단 medium(flex: 2.3)과 완벽 정렬되도록 수정 */
+/* [PLAY/STOP 버튼] 이제 3번째 칸으로 왔으므로 상단 large(flex: 3.2) 영역에 매칭 */
 .play-btn {
     all: unset;
-    flex: 2.3;
+    flex: 3.2; /* 💡 기존 2.3에서 3.2로 변경 (상단 large와 일치) */
     height: 65px;
     cursor: pointer;
     border-radius: 15px;
@@ -158,7 +164,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    
     background-image: linear-gradient(180deg, #9ee5f5, #22859c);
     box-shadow: 
         0 4px 6px -1px rgba(0, 0, 0, 0.5),
@@ -167,23 +172,22 @@ body {
         inset 0 -3px 6px rgba(0, 0, 0, 0.4),
         inset -2px 0 3px rgba(0, 0, 0, 0.2),
         inset 2px 0 3px rgba(255, 255, 255, 0.2);
-    
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
 }
-
 .play-btn:active {
     transform: scale(0.97);
     box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.7);
 }
 
-/* [템포 컨트롤러 영역] 상단 large(flex: 3.2)와 완벽 정렬 */
+/* [템포 컨트롤러] 이제 2번째 칸으로 왔으므로 상단 medium(flex: 2.3) 영역에 매칭 */
 .tempo-controller {
-    flex: 3.2;
+    flex: 2.3; /* 💡 기존 3.2에서 2.3으로 변경 (상단 medium과 일치) */
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
+    width: 0; 
 }
 
 /* [TAP 버튼] */
@@ -416,13 +420,26 @@ body {
    ✨ [신규 추가] 박자 흐름 프로그레스 바 스타일
    ========================================================================= */
 .progress-line {
-    margin-bottom: 5px; /* 하단 그리드와 미세한 간격 배치 */
+    margin-bottom: 5px; 
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
+/* 하단 .grid-wrapper와 동일하게 gap과 flex 성질을 부여합니다 */
+.progress-line .progress-wrapper {
+    flex: 1;
+    display: flex;
+    gap: 10px; 
+    justify-content: flex-start; /* 줄어들었을 때 왼쪽 정렬 고정 */
+}
+
+
 .progress-bar-container {
-    flex: 1; /* grid-wrapper와 정확히 동일한 가로 크기를 가집니다 */
+    /* 원래 flex: 1 이었던 것을 wrapper가 대신 처리하므로 가득 차게 설정 */
+    width: 100%; 
     height: 35px;
-    background-color: darkkhaki; /* 비어있는 상태의 짙은 회색 트랙 */
+    background-color: darkkhaki; 
     border-radius: 4px;
     overflow: hidden;
     position: relative;
@@ -430,11 +447,11 @@ body {
 }
 
 #beat-progress-bar {
-    width: 0%; /* 기본값 0%에서 시작해서 JS로 제어 */
+    width: 0%; 
     height: 100%;
-    background-color: #33ff33; /* 형광 그린 채워지는 색상 (LED 전광판 색상과 매칭) */
+    background-color: #33ff33; 
     box-shadow: 0 0 8px rgba(51, 255, 51, 0.8);
-    transition: width 0.03s linear; /* 미세 tick 간 이동을 부드럽게 연결 */
+    transition: width 0.03s linear; 
 }
 
 
