@@ -16,23 +16,6 @@ let nextNoteTime = 0.0;
 const lookahead = 25.0; // 스케줄러 호출 주기 (ms)
 const scheduleAheadTime = 0.1; // 미리 큐에 담아둘 시간 범위 (sec)
 
-
-// 초기 로드 시 tick 사운드도 미리 로드 목록에 추가해 줍니다.
-window.addEventListener('DOMContentLoaded', () => {
-    initData();
-    setupEventListeners();
-    selectChannel(0);
-    updateTempoDisplay(tempo); 
-    updateTimeSignatureUI();
-    
-    // 💡 [추가] 공통 tick 사운드 사전 로드 선언
-    if (audioCtx) {
-        loadSound('tick');
-    }
-});
-
-
-
 // ⚡ 박자수(Time Signature) 설정 상태 (1/4 ~ 4/4) 및 최대 틱 제한
 let timeSignature = 4; // 기본값 4/4
 const btnSignature = document.getElementById('btn-signature');
@@ -45,7 +28,6 @@ if (btnSignature) {
         updateTimeSignatureUI(); 
     });
 }
-
 
 let maxTicks = 96;     // 박자수에 따른 최대 tick 제한 (1박당 24 tick * timeSignature)
 
@@ -88,19 +70,14 @@ function initData() {
 }
 
 // 템포 업데이트 시 화면 숫자 반영 함수
-// 템포 업데이트 시 화면 숫자 반영 함수 (small 박스 연동 제거 버전)
 function updateTempoDisplay(newTempo) {
     tempo = Math.max(30, Math.min(newTempo, 300));
     
-    // medium 박스 안의 bpm-value 스팬 태그 변경
     const bpmValueDisplay = document.getElementById('bpm-value');
     if (bpmValueDisplay) {
         bpmValueDisplay.textContent = String(tempo).padStart(3, '0');
     }
 }
-
-
-
 
 // =========================================================================
 // [기능 코어 구현 함수들]
@@ -160,41 +137,46 @@ function stopChangingTempo() {
 
 // ⚡ 4. 동적 박자 변경 (Time Signature) 연동 및 Grid 골드 처리 엔진
 function updateTimeSignatureUI() {
-    // 박자수에 따른 최대 틱 제한 수치 설정 (1박자당 24틱)
     maxTicks = timeSignature * 24;
     currentBeat = currentBeat % maxTicks;
 
-    // 1) [수정] 이제 small 박스 내부의 박자 기호 갱신
     const sigValueDisplay = document.getElementById('sig-value');
     if (sigValueDisplay) {
         sigValueDisplay.textContent = `${timeSignature}/4`;
     }
 
-    // 2) 그리드 라인 별 4개 그룹들의 활성화/비활성화(Gold 블렌딩) 처리
+    // 그리드 라인 별 4개 그룹들의 활성화/비활성화 처리
     actualGridLines.forEach((line, lineIdx) => {
         const groups = line.querySelectorAll('.grid-group');
+        
+        // 이 라인 전체에서 현재 셀이 몇 번째 일련번호인지 추적하기 위한 변수
+        let globalCellIdx = 0; 
+
         groups.forEach((group, gIdx) => {
             const isActive = gIdx < timeSignature;
             const cells = group.querySelectorAll('.grid-cell');
             
             if (isActive) {
                 group.style.opacity = "1";
-                cells.forEach((cell, cIdx) => {
+                cells.forEach((cell) => {
                     cell.style.pointerEvents = 'auto';
                     cell.style.boxShadow = 'inset 0 1px 2px rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)';
                     cell.style.border = '';
                     
-                    const totalIndex = (gIdx * cells.length) + cIdx;
                     const currentPattern = CHANNELS_DATA[activeChannelIndex].pattern;
                     let stateVal = 0;
                     
-                    if (lineIdx === 0) stateVal = currentPattern.line32[totalIndex];
-                    else if (lineIdx === 1) stateVal = currentPattern.line6[totalIndex];
-                    else if (lineIdx === 2) stateVal = currentPattern.line16[totalIndex];
+                    // 🔥 [버그 전면 수정] 에러를 내던 변수를 지우고 정확한 1차원 배열 인덱스를 연결했습니다.
+                    if (lineIdx === 0) stateVal = currentPattern.line32[globalCellIdx];
+                    else if (lineIdx === 1) stateVal = currentPattern.line6[globalCellIdx];
+                    else if (lineIdx === 2) stateVal = currentPattern.line16[globalCellIdx];
 
+                    // 💡 정석 순서 매칭: 0(다크카키) -> 1(오렌지) -> 2(레드)
                     if (stateVal === 0) cell.style.backgroundColor = 'darkkhaki';
                     else if (stateVal === 1) cell.style.backgroundColor = '#ffa500';
                     else if (stateVal === 2) cell.style.backgroundColor = '#ff4d4d';
+
+                    globalCellIdx++; // 다음 셀 검사를 위해 인덱스 증가
                 });
             } else {
                 cells.forEach(cell => {
@@ -202,12 +184,13 @@ function updateTimeSignatureUI() {
                     cell.style.backgroundColor = 'gold';
                     cell.style.boxShadow = 'none';
                     cell.style.border = 'none';
+                    globalCellIdx++;
                 });
             }
         });
     });
 
-    // 3) 프로그레스 바 컨테이너 너비 맞춤 (이전 최종 완성본 유지)
+    // 프로그레스 바 컨테이너 너비 맞춤
     const progressContainer = document.querySelector('.progress-bar-container');
     if (progressContainer) {
         const firstLineGroups = actualGridLines[0].querySelectorAll('.grid-group');
@@ -236,9 +219,10 @@ function updateTimeSignatureUI() {
         }
     }
 }
+
 // 박자수 클릭 순환 함수
 function cycleTimeSignature() {
-    timeSignature = (timeSignature % 4) + 1; // 1 -> 2 -> 3 -> 4 -> 1 순환
+    timeSignature = (timeSignature % 4) + 1; 
     updateTimeSignatureUI();
     console.log(`박자가 ${timeSignature}/4 로 변경되었습니다.`);
 }
@@ -254,15 +238,19 @@ function initAudio() {
 
 async function loadSound(soundName) {
     if (soundName === 'empty') return;
+    initAudio(); 
     
-    // 🔥 [신규] human1, human2, human3 일 경우 4개의 음성 파일을 세트로 로드
     if (soundName.startsWith('human')) {
-        const num = soundName.replace('human', ''); // '1', '2', '3' 추출
+        if (!audioBuffers['tick']) {
+            loadSound('tick'); 
+        }
+        
+        const num = soundName.replace('human', ''); 
         const counts = ['one', 'two', 'three', 'four'];
         
         for (const count of counts) {
-            const fileName = `${count}${num}`; // 예: 'one1', 'two1' ...
-            if (audioBuffers[fileName]) continue; // 이미 로드되었다면 패스
+            const fileName = `${count}${num}`; 
+            if (audioBuffers[fileName]) continue; 
             
             const filePath = `./sound/${fileName}.wav`;
             try {
@@ -277,7 +265,6 @@ async function loadSound(soundName) {
         return;
     }
 
-    // 기존 일반 악기(kick, snare 등) 로드 로직 유지
     if (audioBuffers[soundName]) return;
     const filePath = `./sound/${soundName}.wav`;
     try {
@@ -286,7 +273,7 @@ async function loadSound(soundName) {
         const arrayBuffer = await response.arrayBuffer();
         audioBuffers[soundName] = await audioCtx.decodeAudioData(arrayBuffer);
     } catch (err) {
-        console.warn(`가상 오실레이터 비프로 대체됩니다.`, err);
+        console.warn(`${soundName}.wav 로드 실패. 가상 오실레이터 비프로 대체됩니다.`, err);
     }
 }
 
@@ -329,7 +316,6 @@ function selectChannel(index) {
         }
     });
 
-    // 채널 전환 시 활성 상태에 맞춰 다시 UI를 렌더링
     updateTimeSignatureUI();
 }
 
@@ -349,7 +335,7 @@ function advanceBeat() {
     const secondsPerTick = secondsPerBeat / 24; 
     
     nextNoteTime += secondsPerTick;
-    currentBeat = (currentBeat + 1) % maxTicks; // maxTicks 룰에 맞게 유동적 루프 렝스 처리
+    currentBeat = (currentBeat + 1) % maxTicks; 
 }
 
 function scheduleNextNotes(tick, time) {
@@ -364,23 +350,17 @@ function scheduleNextNotes(tick, time) {
     CHANNELS_DATA.forEach(channel => {
         let soundToPlay = channel.sound;
         
-        // 💡 [Human 엔진 업그레이드]
         if (soundToPlay.startsWith('human')) {
-            const num = soundToPlay.replace('human', ''); // '1', '2', '3' 추출
-            
-            // 1박자 = 24tick 입니다. 
-            // tick % 24가 정확히 0일 때만 박자의 첫 시작(정박)입니다.
+            const num = soundToPlay.replace('human', ''); 
             const isExactBeat = (tick % 24 === 0); 
             
             if (isExactBeat) {
-                // 정박일 때는 기존처럼 현재 박수(0, 1, 2, 3)를 구해서one, two, three, four 매칭
                 const currentBeatIndex = Math.floor(tick / 24); 
                 const counts = ['one', 'two', 'three', 'four'];
                 const targetCount = counts[currentBeatIndex] || 'one';
                 
-                soundToPlay = `${targetCount}${num}`; // 예: 'one1', 'two1' ...
+                soundToPlay = `${targetCount}${num}`; 
             } else {
-                // 🔥 정박이 아닐 때 쪼개진 모든 박자는 공통 기계음 'tick'으로 강제 변환!
                 soundToPlay = 'tick'; 
             }
         }
@@ -453,8 +433,6 @@ function togglePlayback() {
 // 8. 이벤트 리스너 바인딩 (인터랙션 핸들러)
 // =========================================================================
 function setupEventListeners() {
-    // ⚡ [수정 포인트] .rect-box.medium 박자 전환 클릭 리스너 바인딩
-
     circleContainers.forEach((container, index) => {
         const circle = container.querySelector('.circle-box');
         circle.addEventListener('click', () => {
@@ -481,17 +459,17 @@ function setupEventListeners() {
             cell.addEventListener('click', () => {
                 initAudio();
                 
-                // ⚡ 비활성화(골드 구역)된 버튼 클릭 시 연산 차단 방어코드
                 const groupIdx = Math.floor(idx / (domCells.length / 4));
                 if (groupIdx >= timeSignature) return;
 
                 const currentPatternData = CHANNELS_DATA[activeChannelIndex].pattern[arrayKey];
+                
+                // 1) 순수 데이터 상태 순환 (0 -> 1 -> 2 -> 0)
                 let nextState = (currentPatternData[idx] + 1) % 3;
                 currentPatternData[idx] = nextState;
                 
-                if (nextState === 0) cell.style.backgroundColor = 'darkkhaki'; 
-                else if (nextState === 1) cell.style.backgroundColor = '#ffa500'; 
-                else if (nextState === 2) cell.style.backgroundColor = '#ff4d4d'; 
+                // 2) UI 통합 동기화 호출
+                updateTimeSignatureUI();
             });
         });
     }
@@ -517,52 +495,26 @@ function setupEventListeners() {
     minusBtn.addEventListener('mouseleave', stopChangingTempo);
 }
 
-// 메인 초기 구동 시점
+// 💡 [통합] 메인 초기 구동 시점 및 이미지 맵 바인딩 핸들러
 window.addEventListener('DOMContentLoaded', () => {
     initData();
     setupEventListeners();
     selectChannel(0);
     updateTempoDisplay(tempo); 
-    updateTimeSignatureUI(); // 초기 4/4 세팅 및 골딩 렌더링 동기화
-});
+    updateTimeSignatureUI(); 
 
-// 이미지 맵 데이터 로더 및 핸들러
-document.addEventListener("DOMContentLoaded", () => {
     const imageMap = { 
-		'click01': 'img/click.png',
-		'click02': 'img/click.png',
-		'click03': 'img/click.png',
-		'click04': 'img/click.png',
-		'click05': 'img/click.png',
-		'click06': 'img/click.png',
-		'click07': 'img/click.png',
-		'click08': 'img/click.png',
-		'click09': 'img/click.png',
-		'click10': 'img/click.png',
-		'hat_close': 'img/hat_close.png',     
-		'hat_open': 'img/hat_open.png',    		
-		'crash': 'img/crash.png', 
-		'ride': 'img/ride.png',
-		'kick': 'img/kick.png',
-		'snare': 'img/snare.png',  	 
-		'tom01': 'img/tom.png',
-		'tom02': 'img/tom.png',
-		'tom03': 'img/tom.png',
-		'tom04': 'img/tom.png',
-		'tom05': 'img/tom.png',
-		'tom06': 'img/tom.png',
-		'tom07': 'img/tom.png',
-		'tom08': 'img/tom.png',
-		'tom09': 'img/tom.png',
-		'tom10': 'img/tom.png',
-		'clap': 'img/clap.png',       
-		'shaker': 'img/shaker.png',
-		'human1': 'img/human1.png',
-		'human2': 'img/human2.png',
-		'human3': 'img/human3.png',
-		
-	
-	 };
+        'click01': 'img/click.png', 'click02': 'img/click.png', 'click03': 'img/click.png',
+        'click04': 'img/click.png', 'click05': 'img/click.png', 'click06': 'img/click.png',
+        'click07': 'img/click.png', 'click08': 'img/click.png', 'click09': 'img/click.png',
+        'click10': 'img/click.png', 'hat_close': 'img/hat_close.png', 'hat_open': 'img/hat_open.png',           
+        'crash': 'img/crash.png', 'ride': 'img/ride.png', 'kick': 'img/kick.png', 'snare': 'img/snare.png',      
+        'tom01': 'img/tom.png', 'tom02': 'img/tom.png', 'tom03': 'img/tom.png', 'tom04': 'img/tom.png',
+        'tom05': 'img/tom.png', 'tom06': 'img/tom.png', 'tom07': 'img/tom.png', 'tom08': 'img/tom.png',
+        'tom09': 'img/tom.png', 'tom10': 'img/tom.png', 'clap': 'img/clap.png', 'shaker': 'img/shaker.png',
+        'human1': 'img/human1.png', 'human2': 'img/human2.png', 'human3': 'img/human3.png'
+    };
+
     circleContainers.forEach(container => {
         const select = container.querySelector("select");
         const circleBox = container.querySelector(".circle-box");
