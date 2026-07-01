@@ -564,6 +564,9 @@ body {
 /* =========================================================================
    ⚡ 모바일 환경 (화면 폭 768px 이하) 전용 반응형 레이아웃 정밀 보정본
    ========================================================================= */
+/* =========================================================================
+   ⚡ 모바일 환경 (화면 폭 768px 이하) 전용 반응형 레이아웃 정밀 보정본
+   ========================================================================= */
 @media (max-width: 768px) {
     /* 전체 패널 정렬 (본체 아래에 브라우저 배치) */
     .main-wrapper {
@@ -606,7 +609,7 @@ body {
         font-size: 24px;
     }
 
-    /* 2. CONTROL-ROW: 2줄 배치 보정 */
+    /* 2. CONTROL-ROW: 공백 오류 수정 및 55px 높이 일괄 적용 */
     .control-row {
         display: grid;
         grid-template-columns: 1fr 2.3fr;
@@ -614,19 +617,35 @@ body {
     }
     .tempo-controller {
         width: 100% !important; 
-
     }
     .play-btn {
         grid-column: span 2; 
+        height: 50px; /* ⭕ 오타 수정 */
+        font-size: 25px;
     }
 
-
+    /* CLEAR 버튼 본체와 3D 레이어들 일괄 55px 대응 */
+    .clear-btn {
+        height: 50px; /* ⭕ 오타 수정 */
+    }
+    .clear-btn .button-outer,
+    .clear-btn .button-inner {
+        height: 100%; /* 부모의 55px를 완벽히 상속 */
+    }
     .clear-btn .button-inner span {
-    	font-size: 27px;
+        font-size: 25px;
+        letter-spacing: 2px;
     }
+
     .tap-btn {
-    	font-size: 27px;    
+        font-size: 25px;
+        letter-spacing: 2px;
+        height: 50px; /* ⭕ 오타 수정 */
     }
+    .arrow-btn {
+        height: 50px; /* ⭕ 오타 수정 */
+    }
+
     /* 3. MIDDLE-ROW: 2줄 배치 */
     .middle-row {
         display: grid;
@@ -655,13 +674,13 @@ body {
     .bottom-container {
         display: flex;
         flex-direction: column;
-        gap: 25px; 
+        gap: 10px; 
         width: 100%;
     }
 
     .grid-line {
         display: grid;
-        grid-template-columns: 55px 1fr; /* 라벨 폭 고정, 우측은 가변 */
+        grid-template-columns: 55px 1fr; 
         gap: 10px;
         width: 100%;
     }
@@ -673,7 +692,6 @@ body {
         width: 100%;
     }
 
-    /* 1,2그룹과 3,4그룹 분리 */
     .grid-wrapper .grid-group:nth-child(1),
     .grid-wrapper .grid-group:nth-child(2) {
         grid-row: 1;
@@ -683,7 +701,6 @@ body {
         grid-row: 2;
     }
 
-    /* ⚡ 프로그레스 바 라인 쪼개짐 및 너비 100% 강제 유연화 */
     .progress-line {
         display: grid;
         grid-template-columns: 55px 1fr;
@@ -695,11 +712,11 @@ body {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px 10px;
         width: 100%;
-        min-width: 0; /* 내부 요소 때문에 늘어나는 현상 원천 차단 */
+        min-width: 0; 
     }
     .progress-bar-container {
         grid-column: span 2; 
-        width: 100% !important; /* 고정 너비 무력화 */
+        width: 100% !important; 
         max-width: 100%;
         height: 25px;
     }
@@ -712,8 +729,8 @@ body {
         font-size: 11px;
     }
     .grid-label img {
-        width: 32px;
-        height: 32px;
+        width: 50px;
+        height: 50px;
     }
 
     /* 5. BROWSER-CONTAINER */
