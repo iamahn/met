@@ -581,14 +581,23 @@ function setupEventListeners() {
     document.getElementById('browser-del').addEventListener('click', deleteSelectedPattern);
 }
 
-// 메인 초기 구동 및 이미지 맵 바인딩 핸들러
-window.addEventListener('DOMContentLoaded', () => {
+// =========================================================================
+// 메인 초기 구동 및 이미지 맵 바인딩 핸들러 (수정본)
+// =========================================================================
+window.addEventListener('DOMContentLoaded', async () => { // ⚡ async 추가
     initData();
     setupEventListeners();
     selectChannel(0);
     updateTempoDisplay(tempo); 
     updateTimeSignatureUI(); 
-    renderBrowserList(); // 브라우저 창 목록 불러오기 고정
+    renderBrowserList(); 
+
+    // ⚡ [버그 수정 핵심] 초기 7개 채널에 설정된 기본 사운드 파일들을 미리 버퍼에 로드합니다.
+    CHANNELS_DATA.forEach(channel => {
+        if (channel.sound && channel.sound !== 'empty') {
+            loadSound(channel.sound);
+        }
+    });
 
     const imageMap = { 
         'click01': 'img/click.png', 'click02': 'img/click.png', 'click03': 'img/click.png',
@@ -614,7 +623,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // 악기 변경 시 및 브라우저에서 리로드될 때 공용 호출 커스텀 이벤트 처리
     window.addEventListener('refreshCircleImages', updateAllCircleImages);
     updateAllCircleImages();
 });
