@@ -612,11 +612,19 @@ body {
     }
     .tempo-controller {
         width: 100% !important; 
+
     }
     .play-btn {
         grid-column: span 2; 
     }
 
+
+    .clear-btn .button-inner span {
+    	font-size: 27px;
+    }
+    .tap-btn {
+    	font-size: 27px;    
+    }
     /* 3. MIDDLE-ROW: 2줄 배치 */
     .middle-row {
         display: grid;
