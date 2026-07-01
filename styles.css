@@ -595,10 +595,12 @@ body {
         grid-column: span 2; 
         font-size: 36px;
         letter-spacing: 2px;
+        height: 60px;
     }
     .rect-box.small, .rect-box.medium {
         font-size: 34px;
         letter-spacing: 1px;
+        height: 60px;
     }
     .rect-box.medium .note-symbol {
         font-size: 24px;
