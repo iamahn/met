@@ -21,10 +21,7 @@ let timeSignature = 4; // 기본값 4/4
 const btnSignature = document.getElementById('btn-signature');
 if (btnSignature) {
     btnSignature.addEventListener('click', () => {
-        // 1/4 ~ 4/4 순환 구조 (4 다음엔 다시 1로)
         timeSignature = timeSignature >= 4 ? 1 : timeSignature + 1;
-        
-        // 박자가 바뀔 때마다 전체 UI(그리드, 프로그레스바) 동기화 호출
         updateTimeSignatureUI(); 
     });
 }
@@ -37,9 +34,9 @@ const circleContainers = document.querySelectorAll('.circle-container');
 
 // progress-line을 제외하고 순수한 패턴 그리드 라인들만 차례대로 선택합니다.
 const actualGridLines = document.querySelectorAll('.grid-line:not(.progress-line)');
-const gridCellsLine1 = actualGridLines[0].querySelectorAll('.grid-cell'); // 32분음표 라인 (8개씩 4그룹)
-const gridCellsLine2 = actualGridLines[1].querySelectorAll('.grid-cell'); // 6연음 라인 (6개씩 4그룹)
-const gridCellsLine3 = actualGridLines[2].querySelectorAll('.grid-cell'); // 16분음표 라인 (4개씩 4그룹)
+const gridCellsLine1 = actualGridLines[0].querySelectorAll('.grid-cell'); 
+const gridCellsLine2 = actualGridLines[1].querySelectorAll('.grid-cell'); 
+const gridCellsLine3 = actualGridLines[2].querySelectorAll('.grid-cell'); 
 
 const tempoDisplay = document.getElementById('bpm-value');
 let tempo = parseInt(tempoDisplay.textContent) || 60;
@@ -53,8 +50,12 @@ let tapTimes = [];
 let tempoIntervalId = null;
 let tempoTimeoutId = null;
 
+// ⚡ [브라우저 엔진 전용 변수]
+let selectedSavedPatternId = null; 
+
 // 데이터 초기화
 function initData() {
+    CHANNELS_DATA.length = 0; // 배열 비우기 (불러오기 시 충돌 방지)
     for (let i = 0; i < TOTAL_CHANNELS; i++) {
         CHANNELS_DATA.push({
             id: i,
@@ -72,7 +73,6 @@ function initData() {
 // 템포 업데이트 시 화면 숫자 반영 함수
 function updateTempoDisplay(newTempo) {
     tempo = Math.max(30, Math.min(newTempo, 300));
-    
     const bpmValueDisplay = document.getElementById('bpm-value');
     if (bpmValueDisplay) {
         bpmValueDisplay.textContent = String(tempo).padStart(3, '0');
@@ -83,27 +83,20 @@ function updateTempoDisplay(newTempo) {
 // [기능 코어 구현 함수들]
 // =========================================================================
 
-// 1. CLEAR 기능: 현재 선택된 채널의 시트만 0으로 초기화
 function clearActiveChannelPattern() {
     const currentPattern = CHANNELS_DATA[activeChannelIndex].pattern;
     currentPattern.line32.fill(0);
     currentPattern.line6.fill(0);
     currentPattern.line16.fill(0);
-    
-    // UI 그리드판 즉시 새로고침
     updateTimeSignatureUI();
-    console.log(`${activeChannelIndex + 1}번째 트랙의 패턴 기록이 삭제되었습니다.`);
 }
 
-// 2. TAP TEMPO 엔진 연산
 function handleTapTempo() {
     initAudio();
     const now = performance.now();
     tapTimes.push(now);
 
-    if (tapTimes.length > 4) {
-        tapTimes.shift();
-    }
+    if (tapTimes.length > 4) tapTimes.shift();
 
     if (tapTimes.length >= 2) {
         let totalIntervals = 0;
@@ -112,15 +105,12 @@ function handleTapTempo() {
         }
         const avgInterval = totalIntervals / (tapTimes.length - 1);
         const calculatedTempo = Math.round(60000 / avgInterval);
-        
         updateTempoDisplay(calculatedTempo);
     }
-    
     clearTimeout(window.tapResetTimeout);
     window.tapResetTimeout = setTimeout(() => { tapTimes = []; }, 3000);
 }
 
-// 3. 연속 증감(Long Press) 매커니즘 구현 함수
 function startChangingTempo(amount) {
     updateTempoDisplay(tempo + amount);
     tempoTimeoutId = setTimeout(() => {
@@ -135,7 +125,7 @@ function stopChangingTempo() {
     clearInterval(tempoIntervalId);
 }
 
-// ⚡ 4. 동적 박자 변경 (Time Signature) 연동 및 Grid 골드 처리 엔진
+// 동적 박자 변경 및 그리드 렌더링 동기화 엔진
 function updateTimeSignatureUI() {
     maxTicks = timeSignature * 24;
     currentBeat = currentBeat % maxTicks;
@@ -145,11 +135,8 @@ function updateTimeSignatureUI() {
         sigValueDisplay.textContent = `${timeSignature}/4`;
     }
 
-    // 그리드 라인 별 4개 그룹들의 활성화/비활성화 처리
     actualGridLines.forEach((line, lineIdx) => {
         const groups = line.querySelectorAll('.grid-group');
-        
-        // 이 라인 전체에서 현재 셀이 몇 번째 일련번호인지 추적하기 위한 변수
         let globalCellIdx = 0; 
 
         groups.forEach((group, gIdx) => {
@@ -166,17 +153,15 @@ function updateTimeSignatureUI() {
                     const currentPattern = CHANNELS_DATA[activeChannelIndex].pattern;
                     let stateVal = 0;
                     
-                    // 🔥 [버그 전면 수정] 에러를 내던 변수를 지우고 정확한 1차원 배열 인덱스를 연결했습니다.
                     if (lineIdx === 0) stateVal = currentPattern.line32[globalCellIdx];
                     else if (lineIdx === 1) stateVal = currentPattern.line6[globalCellIdx];
                     else if (lineIdx === 2) stateVal = currentPattern.line16[globalCellIdx];
 
-                    // 💡 정석 순서 매칭: 0(다크카키) -> 1(오렌지) -> 2(레드)
                     if (stateVal === 0) cell.style.backgroundColor = 'darkkhaki';
                     else if (stateVal === 1) cell.style.backgroundColor = '#ffa500';
                     else if (stateVal === 2) cell.style.backgroundColor = '#ff4d4d';
 
-                    globalCellIdx++; // 다음 셀 검사를 위해 인덱스 증가
+                    globalCellIdx++; 
                 });
             } else {
                 cells.forEach(cell => {
@@ -190,7 +175,7 @@ function updateTimeSignatureUI() {
         });
     });
 
-    // 프로그레스 바 컨테이너 너비 맞춤
+    // 프로그레스 바 컨테이너 맞춤
     const progressContainer = document.querySelector('.progress-bar-container');
     if (progressContainer) {
         const firstLineGroups = actualGridLines[0].querySelectorAll('.grid-group');
@@ -208,7 +193,6 @@ function updateTimeSignatureUI() {
         if (totalActiveWidth > 0) {
             const totalGap = (activeCount - 1) * 10; 
             const finalWidth = totalActiveWidth + totalGap;
-
             progressContainer.style.flex = "none"; 
             progressContainer.style.width = `${finalWidth}px`;
             progressContainer.style.maxWidth = `${finalWidth}px`;
@@ -220,15 +204,13 @@ function updateTimeSignatureUI() {
     }
 }
 
-// 박자수 클릭 순환 함수
 function cycleTimeSignature() {
     timeSignature = (timeSignature % 4) + 1; 
     updateTimeSignatureUI();
-    console.log(`박자가 ${timeSignature}/4 로 변경되었습니다.`);
 }
 
 // =========================================================================
-// 5. 오디오 컨텍스트 및 사운드 버퍼 로더
+// 오디오 컨텍스트 및 사운드 버퍼 로더
 // =========================================================================
 function initAudio() {
     if (!audioCtx) {
@@ -241,17 +223,13 @@ async function loadSound(soundName) {
     initAudio(); 
     
     if (soundName.startsWith('human')) {
-        if (!audioBuffers['tick']) {
-            loadSound('tick'); 
-        }
-        
+        if (!audioBuffers['tick']) loadSound('tick'); 
         const num = soundName.replace('human', ''); 
         const counts = ['one', 'two', 'three', 'four'];
         
         for (const count of counts) {
             const fileName = `${count}${num}`; 
             if (audioBuffers[fileName]) continue; 
-            
             const filePath = `./sound/${fileName}.wav`;
             try {
                 const response = await fetch(filePath);
@@ -259,7 +237,7 @@ async function loadSound(soundName) {
                 const arrayBuffer = await response.arrayBuffer();
                 audioBuffers[fileName] = await audioCtx.decodeAudioData(arrayBuffer);
             } catch (err) {
-                console.warn(`${fileName}.wav 로드 실패. 기본 오실레이터로 대체됩니다.`, err);
+                console.warn(`${fileName}.wav 로드 실패.`, err);
             }
         }
         return;
@@ -273,7 +251,7 @@ async function loadSound(soundName) {
         const arrayBuffer = await response.arrayBuffer();
         audioBuffers[soundName] = await audioCtx.decodeAudioData(arrayBuffer);
     } catch (err) {
-        console.warn(`${soundName}.wav 로드 실패. 가상 오실레이터 비프로 대체됩니다.`, err);
+        console.warn(`${soundName}.wav 로드 실패.`, err);
     }
 }
 
@@ -281,7 +259,8 @@ function playSample(soundName, time, volume, isAccent) {
     if (soundName === 'empty') return;
     if (!audioCtx) return;
     
-    const finalVolume = isAccent ? Math.min(volume * 2.5, 0.7) : volume;
+    // 악센트 다이내믹 극대화
+    const finalVolume = isAccent ? (volume * 2.5) : (volume * 0.7);
     const gainNode = audioCtx.createGain();
     gainNode.gain.setValueAtTime(Math.min(finalVolume, 2.0), time);
     gainNode.connect(audioCtx.destination);
@@ -301,26 +280,18 @@ function playSample(soundName, time, volume, isAccent) {
     }
 }
 
-// =========================================================================
-// 6. UI 채널 선택 브릿지
-// =========================================================================
 function selectChannel(index) {
     activeChannelIndex = index;
-    
     circleContainers.forEach((container, idx) => {
         const circle = container.querySelector('.circle-box');
-        if (idx === index) {
-            circle.classList.add('selected');
-        } else {
-            circle.classList.remove('selected');
-        }
+        if (idx === index) circle.classList.add('selected');
+        else circle.classList.remove('selected');
     });
-
     updateTimeSignatureUI();
 }
 
 // =========================================================================
-// 7. 타이밍 룰 및 스케줄러 알고리즘
+// 타이밍 룰 및 스케줄러 알고리즘
 // =========================================================================
 function scheduler() {
     while (nextNoteTime < audioCtx.currentTime + scheduleAheadTime) {
@@ -333,7 +304,6 @@ function scheduler() {
 function advanceBeat() {
     const secondsPerBeat = 60.0 / tempo;
     const secondsPerTick = secondsPerBeat / 24; 
-    
     nextNoteTime += secondsPerTick;
     currentBeat = (currentBeat + 1) % maxTicks; 
 }
@@ -349,23 +319,18 @@ function scheduleNextNotes(tick, time) {
     
     CHANNELS_DATA.forEach(channel => {
         let soundToPlay = channel.sound;
-        
         if (soundToPlay.startsWith('human')) {
             const num = soundToPlay.replace('human', ''); 
             const isExactBeat = (tick % 24 === 0); 
-            
             if (isExactBeat) {
                 const currentBeatIndex = Math.floor(tick / 24); 
                 const counts = ['one', 'two', 'three', 'four'];
-                const targetCount = counts[currentBeatIndex] || 'one';
-                
-                soundToPlay = `${targetCount}${num}`; 
+                soundToPlay = `${counts[currentBeatIndex] || 'one'}${num}`; 
             } else {
                 soundToPlay = 'tick'; 
             }
         }
 
-        // 32분음표 라인 (8 notes per beat)
         if (tick % 3 === 0) {
             const step32 = tick / 3;
             const state = channel.pattern.line32[step32];
@@ -373,8 +338,6 @@ function scheduleNextNotes(tick, time) {
                 playSample(soundToPlay, time, channel.volume, state === 2);
             }
         }
-        
-        // 6연음 라인 (6 notes per beat)
         if (tick % 4 === 0) {
             const step6 = tick / 4;
             const state = channel.pattern.line6[step6];
@@ -382,8 +345,6 @@ function scheduleNextNotes(tick, time) {
                 playSample(soundToPlay, time, channel.volume, state === 2);
             }
         }
-        
-        // 16분음표 라인 (4 notes per beat)
         if (tick % 6 === 0) {
             const step16 = tick / 6;
             const state = channel.pattern.line16[step16];
@@ -404,33 +365,158 @@ function togglePlayback() {
         
         function updateProgressBarLoop() {
             if (!isPlaying) return;
-            
             const progressPercent = (currentBeat / maxTicks) * 100;
-            if (progressBar) {
-                progressBar.style.width = `${progressPercent}%`;
-                progressBar.style.background = `repeating-linear-gradient(
-                    90deg,
-                    rgba(51, 255, 51, 0.5),
-                    rgba(51, 255, 51, 0.5) 5px,
-                    transparent 5px,
-                    transparent 7px
-                )`;
-            }
+            if (progressBar) progressBar.style.width = `${progressPercent}%`;
             animationFrameId = requestAnimationFrame(updateProgressBarLoop);
         }
         animationFrameId = requestAnimationFrame(updateProgressBarLoop);
-        console.log("드럼머신 재생 시작 (템포: " + tempo + ")");
     } else {
         isPlaying = false;
         clearTimeout(timeoutId);
         if (animationFrameId) cancelAnimationFrame(animationFrameId);
         if (progressBar) progressBar.style.width = '0%';
-        console.log("드럼머신 일시 정지.");
     }
 }
 
 // =========================================================================
-// 8. 이벤트 리스너 바인딩 (인터랙션 핸들러)
+// ⚡ [신규 추가] 패턴 브라우저 영구 로컬스토리지 제어 코어 엔진
+// =========================================================================
+
+// 1) 로컬스토리지에서 목록 추출 및 렌더링
+function renderBrowserList() {
+    const listContainer = document.getElementById('browser-list');
+    if (!listContainer) return;
+    listContainer.innerHTML = '';
+
+    const savedPatterns = JSON.parse(localStorage.getItem('metronome_patterns') || '[]');
+
+    savedPatterns.forEach(pattern => {
+        const item = document.createElement('div');
+        item.className = 'pattern-item';
+        if (selectedSavedPatternId === pattern.id) {
+            item.classList.add('selected');
+        }
+
+        // 인풋 상자를 내장하여 클릭 시 텍스트 즉시 직접 수정 연동
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'pattern-name-input';
+        input.value = pattern.name;
+
+        // 이름 수정 완료 시 동기화
+        input.addEventListener('change', (e) => {
+            renamePattern(pattern.id, e.target.value);
+        });
+
+        // 슬롯 선택 이벤트
+        item.addEventListener('click', (e) => {
+            if (e.target === input) return; // 글씨 지울 때는 선택 해제 방지
+            selectedSavedPatternId = pattern.id;
+            renderBrowserList();
+        });
+
+        item.appendChild(input);
+        listContainer.appendChild(item);
+    });
+}
+
+// 2) 신규 세이브 패턴 생성 (요청하신 규격 포맷 자동 적용)
+function saveCurrentPattern() {
+    const savedPatterns = JSON.parse(localStorage.getItem('metronome_patterns') || '[]');
+    
+    // 번호 자동 계산 (Pattern 001, 002 형식)
+    const nextNum = String(savedPatterns.length + 1).padStart(3, '0');
+    const defaultName = `pattern ${nextNum} ${timeSignature}/4 ${tempo}`;
+
+    const newPattern = {
+        id: Date.now(), // 고유 ID 식별자 생성
+        name: defaultName,
+        tempo: tempo,
+        timeSignature: timeSignature,
+        channelsData: CHANNELS_DATA.map(ch => ({
+            id: ch.id,
+            sound: ch.sound,
+            volume: ch.volume,
+            pattern: JSON.parse(JSON.stringify(ch.pattern)) // 딥 카피 백업
+        }))
+    };
+
+    savedPatterns.push(newPattern);
+    localStorage.setItem('metronome_patterns', JSON.stringify(savedPatterns));
+    selectedSavedPatternId = newPattern.id; // 신규 생성된 슬롯 자동 선택 고정
+    renderBrowserList();
+    console.log("패턴 브라우저 저장 완료:", defaultName);
+}
+
+// 3) 선택된 패턴 드럼머신 보드로 로드
+function loadSelectedPattern() {
+    if (!selectedSavedPatternId) {
+        alert("브라우저 목록에서 불러올 패턴 슬롯을 선택해 주세요!");
+        return;
+    }
+
+    const savedPatterns = JSON.parse(localStorage.getItem('metronome_patterns') || '[]');
+    const target = savedPatterns.find(p => p.id === selectedSavedPatternId);
+
+    if (!target) return;
+
+    // 1. 박자와 템포 기어 변동 및 화면 동기화
+    tempo = target.tempo;
+    timeSignature = target.timeSignature;
+    updateTempoDisplay(tempo);
+
+    // 2. 물리 채널 7개 내부 정보 복원
+    target.channelsData.forEach((savedCh, idx) => {
+        if (CHANNELS_DATA[idx]) {
+            CHANNELS_DATA[idx].sound = savedCh.sound;
+            CHANNELS_DATA[idx].volume = savedCh.volume;
+            CHANNELS_DATA[idx].pattern = savedCh.pattern;
+
+            // 실제 웹페이지 상의 셀렉트박스와 노브 슬라이더 UI 위치 보정
+            const container = circleContainers[idx];
+            if (container) {
+                container.querySelector('.dropdown-menu').value = savedCh.sound;
+                container.querySelector('.volume-slider').value = Math.round(savedCh.volume * 100);
+            }
+            loadSound(savedCh.sound); // 음원 실시간 가동 버퍼 예약
+        }
+    });
+
+    // 3. 전광판 및 격자판 통합 새로고침
+    updateTimeSignatureUI();
+
+    // 4. 원형 패드 이미지 싱크 강제 리프레시 발생시키기
+    window.dispatchEvent(new Event('refreshCircleImages'));
+    console.log("패턴 브라우저 정상 로드 완료:", target.name);
+}
+
+// 4) 삭제 기능
+function deleteSelectedPattern() {
+    if (!selectedSavedPatternId) {
+        alert("삭제할 패턴 슬롯을 브라우저 목록에서 골라주세요!");
+        return;
+    }
+
+    let savedPatterns = JSON.parse(localStorage.getItem('metronome_patterns') || '[]');
+    savedPatterns = savedPatterns.filter(p => p.id !== selectedSavedPatternId);
+    localStorage.setItem('metronome_patterns', JSON.stringify(savedPatterns));
+    
+    selectedSavedPatternId = null;
+    renderBrowserList();
+}
+
+// 5) 브라우저 텍스트 직접 입력 수정 핸들러
+function renamePattern(id, newName) {
+    const savedPatterns = JSON.parse(localStorage.getItem('metronome_patterns') || '[]');
+    const target = savedPatterns.find(p => p.id === id);
+    if (target) {
+        target.name = newName;
+        localStorage.setItem('metronome_patterns', JSON.stringify(savedPatterns));
+    }
+}
+
+// =========================================================================
+// 이벤트 리스너 바인딩 (인터랙션 핸들러)
 // =========================================================================
 function setupEventListeners() {
     circleContainers.forEach((container, index) => {
@@ -445,6 +531,7 @@ function setupEventListeners() {
             initAudio();
             CHANNELS_DATA[index].sound = e.target.value;
             loadSound(e.target.value);
+            window.dispatchEvent(new Event('refreshCircleImages')); // 이미지 즉시 연동
         });
 
         const slider = container.querySelector('.volume-slider');
@@ -453,22 +540,16 @@ function setupEventListeners() {
         });
     });
 
-    // 하단 그리드 클릭 시 3단계 상태 토글 이벤트 핸들러
     function bindLineClickEvents(domCells, arrayKey, lineIdx) {
         domCells.forEach((cell, idx) => {
             cell.addEventListener('click', () => {
                 initAudio();
-                
                 const groupIdx = Math.floor(idx / (domCells.length / 4));
                 if (groupIdx >= timeSignature) return;
 
                 const currentPatternData = CHANNELS_DATA[activeChannelIndex].pattern[arrayKey];
-                
-                // 1) 순수 데이터 상태 순환 (0 -> 1 -> 2 -> 0)
                 let nextState = (currentPatternData[idx] + 1) % 3;
                 currentPatternData[idx] = nextState;
-                
-                // 2) UI 통합 동기화 호출
                 updateTimeSignatureUI();
             });
         });
@@ -493,15 +574,21 @@ function setupEventListeners() {
     minusBtn.addEventListener('mousedown', () => startChangingTempo(-1));
     minusBtn.addEventListener('mouseup', stopChangingTempo);
     minusBtn.addEventListener('mouseleave', stopChangingTempo);
+
+    // ⚡ [브라우저 전용 마우스 버튼 리스너 바인딩]
+    document.getElementById('browser-save').addEventListener('click', saveCurrentPattern);
+    document.getElementById('browser-load').addEventListener('click', loadSelectedPattern);
+    document.getElementById('browser-del').addEventListener('click', deleteSelectedPattern);
 }
 
-// 💡 [통합] 메인 초기 구동 시점 및 이미지 맵 바인딩 핸들러
+// 메인 초기 구동 및 이미지 맵 바인딩 핸들러
 window.addEventListener('DOMContentLoaded', () => {
     initData();
     setupEventListeners();
     selectChannel(0);
     updateTempoDisplay(tempo); 
     updateTimeSignatureUI(); 
+    renderBrowserList(); // 브라우저 창 목록 불러오기 고정
 
     const imageMap = { 
         'click01': 'img/click.png', 'click02': 'img/click.png', 'click03': 'img/click.png',
@@ -515,18 +602,19 @@ window.addEventListener('DOMContentLoaded', () => {
         'human1': 'img/human1.png', 'human2': 'img/human2.png', 'human3': 'img/human3.png'
     };
 
-    circleContainers.forEach(container => {
-        const select = container.querySelector("select");
-        const circleBox = container.querySelector(".circle-box");
-
-        if (select && circleBox) {
-            const updateCircleImage = () => {
+    const updateAllCircleImages = () => {
+        circleContainers.forEach(container => {
+            const select = container.querySelector("select");
+            const circleBox = container.querySelector(".circle-box");
+            if (select && circleBox) {
                 const selectedValue = select.value;
                 const imageUrl = imageMap[selectedValue];
                 circleBox.style.setProperty('--bg-img', imageUrl ? `url('${imageUrl}')` : 'none');
-            };
-            select.addEventListener("change", updateCircleImage);
-            updateCircleImage();
-        }
-    });
+            }
+        });
+    };
+
+    // 악기 변경 시 및 브라우저에서 리로드될 때 공용 호출 커스텀 이벤트 처리
+    window.addEventListener('refreshCircleImages', updateAllCircleImages);
+    updateAllCircleImages();
 });
