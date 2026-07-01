@@ -281,9 +281,9 @@ function playSample(soundName, time, volume, isAccent) {
     if (soundName === 'empty') return;
     if (!audioCtx) return;
     
-    const finalVolume = isAccent ? Math.min(volume * 1.5, 1.2) : volume;
+    const finalVolume = isAccent ? Math.min(volume * 2.5, 0.7) : volume;
     const gainNode = audioCtx.createGain();
-    gainNode.gain.setValueAtTime(finalVolume, time);
+    gainNode.gain.setValueAtTime(Math.min(finalVolume, 2.0), time);
     gainNode.connect(audioCtx.destination);
 
     if (audioBuffers[soundName]) {
@@ -294,7 +294,7 @@ function playSample(soundName, time, volume, isAccent) {
     } else {
         const osc = audioCtx.createOscillator();
         osc.type = isAccent ? 'triangle' : 'sine';
-        osc.frequency.setValueAtTime(isAccent ? 180 : 120, time);
+        osc.frequency.setValueAtTime(isAccent ? 250 : 120, time);
         osc.connect(gainNode);
         osc.start(time);
         osc.stop(time + 0.1);
