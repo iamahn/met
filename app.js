@@ -528,7 +528,41 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // 이미지 맵 데이터 로더 및 핸들러
 document.addEventListener("DOMContentLoaded", () => {
-    const imageMap = { 'click01': 'img/click.png', 'click02': 'img/click.png' };
+    const imageMap = { 
+		'click01': 'img/click.png',
+		'click02': 'img/click.png',
+		'click03': 'img/click.png',
+		'click04': 'img/click.png',
+		'click05': 'img/click.png',
+		'click06': 'img/click.png',
+		'click07': 'img/click.png',
+		'click08': 'img/click.png',
+		'click09': 'img/click.png',
+		'click10': 'img/click.png',
+		'hat_close': 'img/hat_close.png',     
+		'hat_open': 'img/hat_open.png',    		
+		'crash': 'img/crash.png', 
+		'ride': 'img/ride.png',
+		'kick': 'img/kick.png',
+		'snare': 'img/snare.png',  	 
+		'tom01': 'img/tom.png',
+		'tom02': 'img/tom.png',
+		'tom03': 'img/tom.png',
+		'tom04': 'img/tom.png',
+		'tom05': 'img/tom.png',
+		'tom06': 'img/tom.png',
+		'tom07': 'img/tom.png',
+		'tom08': 'img/tom.png',
+		'tom09': 'img/tom.png',
+		'tom10': 'img/tom.png',
+		'clap': 'img/clap.png',       
+		'shaker': 'img/shaker.png',
+		'human1': 'img/human1.png',
+		'human2': 'img/human2.png',
+		'human3': 'img/human3.png',
+		
+	
+	 };
     circleContainers.forEach(container => {
         const select = container.querySelector("select");
         const circleBox = container.querySelector(".circle-box");
